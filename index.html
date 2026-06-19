@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CAI Shift Roster</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f4f8;min-height:100vh;color:#1e293b}
+  #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a2744 0%,#2563eb 100%)}
+  .login-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:420px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+  .login-logo{text-align:center;margin-bottom:24px}
+  .login-logo .logo-icon{width:56px;height:56px;background:#1a2744;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .login-logo .logo-icon svg{width:30px;height:30px;fill:#fff}
+  .login-logo h1{font-size:22px;font-weight:700;color:#1a2744}
+  .login-logo p{font-size:13px;color:#64748b;margin-top:4px}
+  .form-group{margin-bottom:14px}
+  .form-group label{display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:5px}
+  .form-group input{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;color:#1e293b;outline:none;transition:border-color .2s}
+  .form-group input:focus{border-color:#2563eb}
+  .btn-login{width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn-login:hover{background:#1d4ed8}
+  .login-error{color:#dc2626;font-size:13px;margin-top:8px;text-align:center;display:none}
+  .login-hint{font-size:11px;color:#94a3b8;text-align:center;margin-top:12px;line-height:1.7}
+  /* CONFIG SCREEN */
+  #config-screen{display:none;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#1a2744 0%,#2563eb 100%)}
+  .config-card{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:480px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+  .config-card h2{font-size:20px;font-weight:700;color:#1a2744;margin-bottom:6px}
+  .config-card p{font-size:13px;color:#64748b;margin-bottom:20px;line-height:1.6}
+  .config-card .form-group label{font-size:13px;font-weight:500;color:#374151;display:block;margin-bottom:5px}
+  .config-card .form-group input{width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;font-family:monospace;outline:none}
+  .config-card .form-group input:focus{border-color:#2563eb}
+  .btn-connect{width:100%;padding:12px;background:#1a2744;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
+  .btn-connect:hover{background:#0f172a}
+  .config-hint{font-size:11px;color:#94a3b8;margin-top:14px;line-height:1.8;text-align:center}
+  .config-hint a{color:#2563eb;text-decoration:none}
+  /* APP */
+  #app{display:none;flex-direction:column;min-height:100vh}
+  .topbar{background:#1a2744;color:#fff;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+  .topbar-left{display:flex;align-items:center;gap:12px}
+  .topbar-logo{width:32px;height:32px;background:#2563eb;border-radius:8px;display:flex;align-items:center;justify-content:center}
+  .topbar-logo svg{width:18px;height:18px;fill:#fff}
+  .topbar h1{font-size:16px;font-weight:600}
+  .topbar-right{display:flex;align-items:center;gap:10px}
+  .user-badge{font-size:12px;background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:20px}
+  .role-badge{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600}
+  .role-badge.manager{background:#dbeafe;color:#1d4ed8}
+  .role-badge.admin{background:#fef3c7;color:#92400e}
+  .db-badge{font-size:11px;padding:3px 10px;border-radius:10px;font-weight:500;background:#dcfce7;color:#166534}
+  .db-badge.connecting{background:#fef9c3;color:#854d0e}
+  .db-badge.error{background:#fee2e2;color:#991b1b}
+  .btn-sm{padding:6px 14px;border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer}
+  .btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:#fff}
+  .btn-outline:hover{background:rgba(255,255,255,0.1)}
+  .tabs{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 24px;display:flex}
+  .tab{padding:14px 20px;font-size:14px;font-weight:500;color:#64748b;cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s}
+  .tab:hover{color:#1a2744}
+  .tab.active{color:#2563eb;border-bottom-color:#2563eb}
+  .content{padding:24px;flex:1}
+  .panel{display:none}
+  .panel.active{display:block}
+  .card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);overflow:hidden}
+  .card-header{padding:16px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .card-header h2{font-size:16px;font-weight:600;color:#1a2744}
+  .card-header p{font-size:13px;color:#64748b;margin-top:2px}
+  .week-nav{display:flex;align-items:center;gap:10px}
+  .week-nav button{background:#f1f5f9;border:none;border-radius:6px;width:30px;height:30px;font-size:16px;cursor:pointer;color:#374151}
+  .week-nav button:hover{background:#e2e8f0}
+  .week-label{font-size:14px;font-weight:600;color:#1a2744;min-width:160px;text-align:center}
+  /* LOCKED BANNER */
+  .locked-banner{display:flex;align-items:center;gap:12px;padding:14px 20px;background:#f0fdf4;border-bottom:2px solid #86efac}
+  .locked-banner .lock-icon{font-size:20px}
+  .locked-banner .lock-text{font-size:13px;font-weight:600;color:#166534}
+  .locked-banner .lock-sub{font-size:12px;color:#4ade80;margin-top:1px}
+  /* BULK BAR */
+  .bulk-bar{display:flex;align-items:center;gap:10px;padding:10px 20px;background:#f0f7ff;border-bottom:1px solid #dbeafe;flex-wrap:wrap}
+  .bulk-bar label{font-size:12px;font-weight:700;color:#1d4ed8;white-space:nowrap}
+  .bulk-day-btns{display:flex;gap:5px;flex-wrap:wrap}
+  .bulk-day-btn{padding:3px 9px;border:1.5px solid #bfdbfe;border-radius:6px;background:#fff;font-size:11px;font-weight:500;color:#1d4ed8;cursor:pointer}
+  .bulk-day-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+  .bulk-shift-btns{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+  .bulk-shift-btn{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid transparent}
+  .bulk-shift-btn.bA{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
+  .bulk-shift-btn.bB{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
+  .bulk-shift-btn.bC{background:#fefce8;color:#854d0e;border-color:#fef08a}
+  .bulk-shift-btn.bD{background:#fdf4ff;color:#7e22ce;border-color:#e9d5ff}
+  .bulk-shift-btn.bE{background:#fff1f2;color:#be123c;border-color:#fecdd3}
+  .bulk-shift-btn.bTO{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
+  .bulk-shift-btn.bOFF{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
+  .bulk-divider{width:1px;height:20px;background:#bfdbfe;margin:0 2px}
+  .roster-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{padding:8px 10px;text-align:center;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;background:#f8fafc;border-bottom:1px solid #e2e8f0;white-space:nowrap}
+  th.left{text-align:left}
+  td{padding:6px 8px;border-bottom:1px solid #f1f5f9;vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#fafbfc}
+  .emp-name{font-weight:600;color:#1e293b;font-size:12px;padding-top:2px}
+  .day-cell{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:78px}
+  .shift-select{padding:3px 4px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;outline:none;background:#fff;width:76px;text-align:center}
+  .shift-select:disabled{opacity:0.7;cursor:not-allowed;background:#f8fafc}
+  /* READ-ONLY SHIFT BADGE (locked view) */
+  .shift-badge-ro{display:inline-block;padding:3px 8px;border-radius:5px;font-size:11px;font-weight:600;width:76px;text-align:center}
+  .oncall-day{display:flex;align-items:center;gap:3px;cursor:pointer;user-select:none}
+  .oncall-day input[type=checkbox]{width:11px;height:11px;accent-color:#f59e0b;cursor:pointer;flex-shrink:0}
+  .oncall-day input:disabled{cursor:not-allowed;opacity:0.6}
+  .oncall-day-label{font-size:9px;color:#94a3b8;font-weight:500}
+  .oncall-day input:checked ~ .oncall-day-label{color:#d97706;font-weight:700}
+  .sa-row td{background:#f0f7ff !important;border-bottom:2px solid #bfdbfe !important}
+  .sa-label{font-size:10px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:0.04em;line-height:1.5}
+  .comment-input{width:100%;min-width:130px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:11px;color:#374151;outline:none;resize:vertical;font-family:inherit;background:#fff;line-height:1.4;min-height:46px}
+  .comment-input:focus{border-color:#2563eb}
+  .comment-input:disabled{background:#f8fafc;cursor:not-allowed;color:#94a3b8}
+  .comment-input::placeholder{color:#cbd5e1}
+  .shift-legend{display:flex;flex-wrap:wrap;gap:8px;padding:11px 20px;border-top:1px solid #f1f5f9;background:#f8fafc}
+  .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#64748b}
+  .legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+  .action-bar{padding:12px 20px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .action-bar .hint{font-size:12px;color:#94a3b8}
+  .btn-submit{padding:9px 26px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+  .btn-submit:hover{background:#1d4ed8}
+  .btn-submit:disabled{background:#93c5fd;cursor:not-allowed}
+  .btn-locked{padding:9px 26px;background:#16a34a;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:not-allowed;display:flex;align-items:center;gap:8px}
+  .toast{position:fixed;bottom:24px;right:24px;background:#1a2744;color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all .3s;z-index:999;max-width:340px}
+  .toast.show{transform:translateY(0);opacity:1}
+  .toast.success{border-left:4px solid #22c55e}
+  .toast.error{border-left:4px solid #ef4444}
+  .toast.info{border-left:4px solid #2563eb}
+  .status-pill{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500;white-space:nowrap}
+  .status-pill.submitted{background:#dcfce7;color:#166534}
+  .status-pill.pending{background:#fef9c3;color:#854d0e}
+  .status-pill.locked{background:#dcfce7;color:#166534}
+  .report-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid #f1f5f9}
+  .report-controls select{padding:6px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;outline:none;color:#1e293b}
+  .btn-export{padding:8px 16px;background:#1a2744;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .btn-export:hover{background:#0f172a}
+  .btn-unlock{padding:3px 8px;background:#fff3cd;border:1px solid #ffc107;color:#856404;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer}
+  .btn-unlock:hover{background:#ffc107;color:#fff}
+  .manage-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media(max-width:700px){.manage-grid{grid-template-columns:1fr}}
+  .manage-list{list-style:none;max-height:300px;overflow-y:auto}
+  .manage-list li{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:12px}
+  .manage-list li:last-child{border-bottom:none}
+  .manage-list .name{font-weight:500;color:#1e293b}
+  .manage-list .meta{font-size:10px;color:#94a3b8;margin-top:1px}
+  .manage-list .actions{display:flex;gap:4px;align-items:center;flex-shrink:0}
+  .btn-icon{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:12px;padding:3px 5px;border-radius:4px}
+  .btn-icon:hover{color:#dc2626}
+  .btn-reassign{background:#eff6ff;border:none;cursor:pointer;color:#1d4ed8;font-size:10px;padding:3px 7px;border-radius:4px;font-weight:500}
+  .btn-reassign:hover{background:#dbeafe}
+  .add-form{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+  .add-form input,.add-form select{flex:1;min-width:90px;padding:7px 9px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:12px;outline:none}
+  .btn-add{padding:7px 14px;background:#2563eb;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .pw-form{padding:20px;max-width:380px}
+  .pw-form .form-group{margin-bottom:13px}
+  .pw-form .form-group label{font-size:13px;font-weight:500;color:#374151;display:block;margin-bottom:5px}
+  .pw-form .form-group input{width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:14px;outline:none}
+  .section-title{font-size:13px;font-weight:600;color:#1a2744;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f1f5f9}
+  .empty-state{text-align:center;padding:36px 20px;color:#94a3b8;font-size:13px}
+  .summary-row{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .summary-card{flex:1;min-width:100px;background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);text-align:center}
+  .summary-card .num{font-size:24px;font-weight:700;color:#1a2744}
+  .summary-card .lbl{font-size:11px;color:#64748b;margin-top:2px}
+  .info-box{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;font-size:12px;color:#1d4ed8;margin-bottom:14px;line-height:1.6}
+  .info-box strong{display:block;margin-bottom:4px;font-size:13px}
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:center;justify-content:center}
+  .modal-bg.open{display:flex}
+  .modal{background:#fff;border-radius:14px;padding:28px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+  .modal h3{font-size:16px;font-weight:700;color:#1a2744;margin-bottom:6px}
+  .modal p{font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.6}
+  .modal select{width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:13px;outline:none;margin-bottom:18px}
+  .modal-btns{display:flex;gap:10px;justify-content:flex-end}
+  .btn-cancel{padding:9px 20px;background:#f1f5f9;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#374151}
+  .btn-confirm{padding:9px 20px;background:#2563eb;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#fff}
+  .btn-danger{padding:9px 20px;background:#dc2626;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#fff}
+
+  .dir-card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);overflow:hidden}
+  .dir-card-header{padding:12px 16px;background:#1a2744;display:flex;align-items:center;justify-content:space-between}
+  .dir-card-header .mgr-name{font-weight:600;font-size:13px;color:#fff}
+  .dir-card-header .mgr-meta{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+  .dir-card-header .emp-count{font-size:11px;background:rgba(255,255,255,0.15);color:#fff;padding:2px 8px;border-radius:10px;font-weight:500}
+  .dir-emp-list{list-style:none}
+  .dir-emp-list li{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;border-bottom:1px solid #f1f5f9;font-size:12px}
+  .dir-emp-list li:last-child{border-bottom:none}
+  .dir-emp-list .emp-name{font-weight:500;color:#1e293b}
+  .dir-emp-list .emp-shift{font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600}
+  .dir-hidden{display:none}
+
+  .loading-overlay{display:none;position:fixed;inset:0;background:rgba(255,255,255,0.8);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+  .loading-overlay.show{display:flex}
+  .spinner{width:36px;height:36px;border:3px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading-overlay p{font-size:14px;color:#64748b;font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- CONFIG SCREEN (first time only) -->
+<div id="config-screen">
+  <div class="config-card">
+    <h2>Connect to Supabase</h2>
+    <p>Enter your Supabase project credentials to enable live data sync across all managers. This is a one-time setup — credentials are saved in your browser.</p>
+    <div class="form-group">
+      <label>Supabase Project URL</label>
+      <input type="text" id="cfg-url" placeholder="https://xxxxxxxxxxxx.supabase.co"/>
+    </div>
+    <div class="form-group">
+      <label>Supabase Anon / Public Key</label>
+      <input type="text" id="cfg-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."/>
+    </div>
+    <button class="btn-connect" onclick="saveSupabaseConfig()">Connect &amp; Continue</button>
+    <div class="config-hint">
+      No account yet? <a href="https://supabase.com" target="_blank">Sign up free at supabase.com</a> — no credit card needed.<br/>
+      See SUPABASE_SETUP.md for step-by-step instructions.
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen" style="display:none">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 4H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm-7 3a3 3 0 110 6 3 3 0 010-6zm5 11H7v-.5c0-2 4-3.1 5-3.1s5 1.1 5 3.1V18z"/></svg>
+      </div>
+      <h1>CAI Shift Roster</h1>
+      <p>Sign in with your credentials</p>
+    </div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="login-user" placeholder="e.g. dbeauchamp" autocomplete="username"/>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="login-pass" placeholder="Your staff ID" autocomplete="current-password"/>
+    </div>
+    <button class="btn-login" onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="login-error">Incorrect username or password.</div>
+    <div class="login-hint">Username = email prefix &nbsp;·&nbsp; Password = staff ID<br/>Admin: <strong>admin</strong> / <strong>admin@roster</strong></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">
+        <svg viewBox="0 0 24 24"><path d="M19 4H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm-7 3a3 3 0 110 6 3 3 0 010-6zm5 11H7v-.5c0-2 4-3.1 5-3.1s5 1.1 5 3.1V18z"/></svg>
+      </div>
+      <h1>CAI Shift Roster</h1>
+    </div>
+    <div class="topbar-right">
+      <span class="db-badge connecting" id="db-badge">⬤ Connecting…</span>
+      <span class="user-badge" id="topbar-user"></span>
+      <span class="role-badge" id="topbar-role"></span>
+      <button class="btn-sm btn-outline" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+  <div class="tabs" id="main-tabs"></div>
+  <div class="content">
+
+    <!-- ROSTER -->
+    <div class="panel" id="panel-roster">
+      <div class="summary-row" id="roster-summary"></div>
+      <div class="card">
+        <div class="card-header">
+          <div><h2 id="roster-title">Weekly Shift Entry</h2><p>Shift + on-call per day · Comments per employee</p></div>
+          <div class="week-nav">
+            <button onclick="changeWeek(-1)">&#8249;</button>
+            <span class="week-label" id="week-label"></span>
+            <button onclick="changeWeek(1)">&#8250;</button>
+          </div>
+        </div>
+        <div id="locked-banner" class="locked-banner" style="display:none">
+          <span class="lock-icon">🔒</span>
+          <div>
+            <div class="lock-text">This week has been submitted and locked</div>
+            <div class="lock-sub" id="locked-sub">Submitted on —</div>
+          </div>
+        </div>
+        <div id="bulk-bar-wrap">
+          <div class="bulk-bar">
+            <label>Apply shift to all:</label>
+            <div class="bulk-day-btns">
+              <button class="bulk-day-btn active" data-day="all" onclick="toggleBulkDay(this)">All days</button>
+              <button class="bulk-day-btn" data-day="0" onclick="toggleBulkDay(this)">Mon</button>
+              <button class="bulk-day-btn" data-day="1" onclick="toggleBulkDay(this)">Tue</button>
+              <button class="bulk-day-btn" data-day="2" onclick="toggleBulkDay(this)">Wed</button>
+              <button class="bulk-day-btn" data-day="3" onclick="toggleBulkDay(this)">Thu</button>
+              <button class="bulk-day-btn" data-day="4" onclick="toggleBulkDay(this)">Fri</button>
+              <button class="bulk-day-btn" data-day="5" onclick="toggleBulkDay(this)">Sat</button>
+              <button class="bulk-day-btn" data-day="6" onclick="toggleBulkDay(this)">Sun</button>
+            </div>
+            <div class="bulk-divider"></div>
+            <div class="bulk-shift-btns">
+              <button class="bulk-shift-btn bA" onclick="applyBulkShift('A')">A</button>
+              <button class="bulk-shift-btn bB" onclick="applyBulkShift('B')">B</button>
+              <button class="bulk-shift-btn bC" onclick="applyBulkShift('C')">C</button>
+              <button class="bulk-shift-btn bD" onclick="applyBulkShift('D')">D</button>
+              <button class="bulk-shift-btn bE" onclick="applyBulkShift('E')">E</button>
+              <button class="bulk-shift-btn bTO" onclick="applyBulkShift('TO')">Time Off</button>
+              <button class="bulk-shift-btn bOFF" onclick="applyBulkShift('OFF')">Clear</button>
+            </div>
+          </div>
+        </div>
+        <div class="roster-wrap">
+          <table><thead><tr id="roster-thead"></tr></thead><tbody id="roster-body"></tbody></table>
+        </div>
+        <div class="shift-legend" id="shift-legend"></div>
+        <div class="action-bar">
+          <span class="hint" id="last-submitted"></span>
+          <div id="action-btns"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORT (admin) -->
+    <div class="panel" id="panel-report">
+      <div class="summary-row" id="admin-summary"></div>
+      <div class="card">
+        <div class="card-header"><div><h2>Shift Report</h2><p>All submitted shifts — live from Supabase</p></div></div>
+        <div class="report-controls">
+          <select id="filter-manager" onchange="renderReport()"><option value="">All managers</option></select>
+          <select id="filter-week" onchange="renderReport()"><option value="">All weeks</option></select>
+          <select id="filter-shift" onchange="renderReport()">
+            <option value="">All shifts</option>
+            <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option>
+            <option value="TO">Time Off</option><option value="OFF">Off</option>
+          </select>
+          <select id="filter-oncall" onchange="renderReport()">
+            <option value="">All employees</option><option value="yes">On Call only</option>
+          </select>
+          <button class="btn-export" onclick="exportExcel()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Export Excel
+          </button>
+          <button class="btn-sm" style="background:#f1f5f9;border:1px solid #e2e8f0;color:#374151;padding:7px 14px;border-radius:7px;font-size:12px;cursor:pointer" onclick="loadReport()">↻ Refresh</button>
+        </div>
+        <div class="roster-wrap">
+          <table><thead><tr id="report-thead"></tr></thead><tbody id="report-body"></tbody></table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- DIRECTORY (admin) -->
+    <div class="panel" id="panel-directory">
+      <div class="summary-row" id="dir-summary"></div>
+      <div style="display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+        <button class="btn-export" onclick="exportDirectory()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Export Directory to Excel
+        </button>
+        <input type="text" id="dir-search" placeholder="Search manager or employee…" oninput="filterDirectory()" style="padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px;outline:none;min-width:220px"/>
+      </div>
+      <div id="directory-grid" style="display:flex;flex-direction:column;gap:16px"></div>
+    </div>
+
+    <!-- MANAGE (admin) -->
+    <div class="panel" id="panel-manage">
+      <div class="info-box">
+        <strong>ℹ️ Reassigning an employee</strong>
+        Find the employee → click <strong>Reassign</strong> → pick new manager → confirm. Past submissions preserved. Log included in every export.
+      </div>
+      <div style="margin-bottom:14px">
+        <button class="btn-submit" style="font-size:13px;padding:8px 18px" onclick="seedEmployeesToSupabase()">↑ Sync all employees to Supabase</button>
+        <span style="font-size:11px;color:#94a3b8;margin-left:10px">Run once after first setup</span>
+      </div>
+      <div class="manage-grid">
+        <div class="card" style="padding:18px">
+          <div class="section-title">Managers</div>
+          <ul class="manage-list" id="manager-list"></ul>
+          <div class="add-form">
+            <input type="text" id="new-mgr-name" placeholder="Full name"/>
+            <input type="text" id="new-mgr-user" placeholder="Username"/>
+            <button class="btn-add" onclick="addManager()">+ Add</button>
+          </div>
+        </div>
+        <div class="card" style="padding:18px">
+          <div class="section-title">Employees</div>
+          <ul class="manage-list" id="employee-list"></ul>
+          <div class="add-form">
+            <input type="text" id="new-emp-name" placeholder="Employee name"/>
+            <select id="new-emp-mgr"></select>
+            <button class="btn-add" onclick="addEmployee()">+ Add</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="panel" id="panel-password">
+      <div class="card" style="max-width:420px">
+        <div class="card-header"><div><h2>Change Password</h2><p>Update your login password</p></div></div>
+        <div class="pw-form">
+          <div class="form-group"><label>Current password</label><input type="password" id="pw-current"/></div>
+          <div class="form-group"><label>New password</label><input type="password" id="pw-new" placeholder="At least 6 characters"/></div>
+          <div class="form-group"><label>Confirm new password</label><input type="password" id="pw-confirm"/></div>
+          <button class="btn-submit" onclick="changePassword()" style="width:auto;padding:9px 24px">Update Password</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REASSIGN MODAL -->
+<div class="modal-bg" id="reassign-modal">
+  <div class="modal">
+    <h3>Reassign Employee</h3>
+    <p id="reassign-desc"></p>
+    <select id="reassign-select"></select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeReassign()">Cancel</button>
+      <button class="btn-confirm" onclick="confirmReassign()">Reassign</button>
+    </div>
+  </div>
+</div>
+
+<!-- UNLOCK MODAL -->
+<div class="modal-bg" id="unlock-modal">
+  <div class="modal">
+    <h3>Unlock Submission</h3>
+    <p id="unlock-desc">This will allow the manager to re-edit and resubmit this week's shifts. Only do this if a correction is genuinely needed.</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeUnlock()">Cancel</button>
+      <button class="btn-danger" onclick="confirmUnlock()">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <p id="loading-msg">Loading…</p>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── SUPABASE CONFIG ──────────────────────────────────────────────────────────
+let SUPABASE_URL = localStorage.getItem('sb_url') || 'https://daiqvubohmaufwxduprk.supabase.co';
+let SUPABASE_KEY = localStorage.getItem('sb_key') || 'sb_publishable_OIk57N_yfdmV-dDNn1_uug_PljSZxCq';
+
+function saveSupabaseConfig(){
+  const url = document.getElementById('cfg-url').value.trim().replace(/\/$/,'');
+  const key = document.getElementById('cfg-key').value.trim();
+  if(!url || !key){ showToastGlobal('Enter both URL and key.','error'); return; }
+  SUPABASE_URL = url; SUPABASE_KEY = key;
+  localStorage.setItem('sb_url', url); localStorage.setItem('sb_key', key);
+  document.getElementById('config-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  showToastGlobal('Supabase connected!','success');
+}
+
+// Show config screen if not configured yet
+window.addEventListener('DOMContentLoaded', ()=>{
+  if(!SUPABASE_URL || !SUPABASE_KEY){
+    document.getElementById('config-screen').style.display = 'flex';
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+  }
+});
+
+// ─── SUPABASE API HELPER ──────────────────────────────────────────────────────
+async function sb(method, table, body=null, params=''){
+  const url = `${SUPABASE_URL}/rest/v1/${table}${params}`;
+  const headers = {
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+    'Content-Type': 'application/json',
+    'Prefer': method==='POST' ? 'resolution=merge-duplicates,return=representation' : 'return=representation'
+  };
+  const res = await fetch(url, {method, headers, body: body ? JSON.stringify(body) : null});
+  if(!res.ok){
+    const err = await res.text();
+    throw new Error(`Supabase ${method} ${table}: ${res.status} ${err}`);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : [];
+}
+
+async function sbGet(table, params=''){ return sb('GET', table, null, params); }
+async function sbUpsert(table, data){ return sb('POST', table, data); }
+async function sbPatch(table, data, params){ return sb('PATCH', table, data, params); }
+async function sbDelete(table, params){ return sb('DELETE', table, null, params); }
+
+// ─── SHIFT CONFIG ─────────────────────────────────────────────────────────────
+const SHIFT_LABELS={A:'11:00 AM–1:30 PM',B:'3:00–5:30 PM',D:'6:30–7:30 PM',E:'After 8:00 PM',TO:'Time Off',OFF:'Not assigned'};
+const SHIFT_OPTIONS=['OFF','A','B','D','E','TO'];
+const DAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAY_KEYS=['mon','tue','wed','thu','fri','sat','sun'];
+function shiftBg(s){return{A:'#eff6ff',B:'#f0fdf4',D:'#fdf4ff',E:'#fff1f2',TO:'#fff7ed',OFF:'#f8fafc'}[s]||'#f8fafc';}
+function shiftFg(s){return{A:'#1d4ed8',B:'#166534',D:'#7e22ce',E:'#be123c',TO:'#9a3412',OFF:'#94a3b8'}[s]||'#94a3b8';}
+function shiftBorder(s){return{A:'#bfdbfe',B:'#bbf7d0',D:'#e9d5ff',E:'#fecdd3',TO:'#fed7aa',OFF:'#e2e8f0'}[s]||'#e2e8f0';}
+
+// ─── SEED DATA (employees & user auth live in browser; shifts in Supabase) ────
+const SEED_MANAGERS={"dbeauchamp": {"name": "Beauchamp, David", "username": "dbeauchamp"}, "kevinb": {"name": "Beauregard, Kevin", "username": "kevinb"}, "rgrimes": {"name": "Grimes, Robert", "username": "rgrimes"}, "kkasparek": {"name": "Kasparek, Kurt", "username": "kkasparek"}, "dmillen": {"name": "Millen, Daniel", "username": "dmillen"}, "lmorales": {"name": "Morales, Levi", "username": "lmorales"}, "zahmed": {"name": "Mulla Zaheer A", "username": "zahmed"}, "nnhem": {"name": "Nhem, Narin", "username": "nnhem"}, "aparslow": {"name": "Parslow, Amy", "username": "aparslow"}, "rpatel": {"name": "Patel, Rakesh", "username": "rpatel"}, "ptemple": {"name": "Paul Temple", "username": "ptemple"}, "psimpson": {"name": "Simpson, Paula", "username": "psimpson"}, "mvartanoff": {"name": "Vartanoff, Martha", "username": "mvartanoff"}, "adeep": {"name": "Deep, Aman", "username": "adeep"}, "bhall": {"name": "Brad Hall", "username": "bhall"}, "bpower": {"name": "Brenda Power", "username": "bpower"}, "ccunha": {"name": "da Cunha, Clovis M.", "username": "ccunha"}, "deepas": {"name": "Deepa Kumari S", "username": "deepas"}, "eoushana": {"name": "Edmond Oushanayou", "username": "eoushana"}, "nfederoff": {"name": "Federoff, Nakeita", "username": "nfederoff"}, "jmiller": {"name": "Jamie Miller", "username": "jmiller"}, "cwillis": {"name": "Christina Willis", "username": "cwillis"}, "kthompkins": {"name": "Kim Thompkins", "username": "kthompkins"}, "ktilavalli": {"name": "Kiranraj Tilavalli", "username": "ktilavalli"}, "k.das": {"name": "Krishanu Das", "username": "k.das"}, "kjaura": {"name": "Jaura, Kulbir", "username": "kjaura"}, "rfelix": {"name": "Felix, Reyolin", "username": "rfelix"}, "mhenderson": {"name": "Mark Merickel", "username": "mhenderson"}, "mmontaruli": {"name": "Matthew Montaruli", "username": "mmontaruli"}, "nthapliyal": {"name": "Neha Thapliyal", "username": "nthapliyal"}, "mharvan": {"name": "Melissa Harvan", "username": "mharvan"}, "dpatil": {"name": "OpBroek (dpatil)", "username": "dpatil"}, "bblackhurst": {"name": "OpBroek (bblackhurst)", "username": "bblackhurst"}, "ksmedley": {"name": "OpBroek (ksmedley)", "username": "ksmedley"}, "dpedroso": {"name": "Pedroso, Danrlei Avila", "username": "dpedroso"}, "rbarik": {"name": "Barik, Rakesh", "username": "rbarik"}, "vsequeira": {"name": "Sequeira, Vivek H.", "username": "vsequeira"}, "scabrera": {"name": "Cabrera, Sherilyn", "username": "scabrera"}, "smumtaz": {"name": "Sumaiya Mumtaz", "username": "smumtaz"}, "vfilipkova": {"name": "Veronika Filipkova", "username": "vfilipkova"}, "rajarshi": {"name": "Raj", "username": "rajarshi"}, "deepak": {"name": "Deepak", "username": "deepak"}};
+const SEED_EMPLOYEES=[{"id": "e1", "name": "Bijumon K N", "managerId": "dbeauchamp", "defaultShift": "B"}, {"id": "e2", "name": "Paarthasarathy Jagannathan", "managerId": "kevinb", "defaultShift": "B"}, {"id": "e3", "name": "Sabarinathan Gopal", "managerId": "kevinb", "defaultShift": "B"}, {"id": "e4", "name": "Manugandhi N", "managerId": "kevinb", "defaultShift": "C"}, {"id": "e5", "name": "Prem Shaju Y", "managerId": "kevinb", "defaultShift": "C"}, {"id": "e6", "name": "Harish Appalabattula", "managerId": "rgrimes", "defaultShift": "A"}, {"id": "e7", "name": "Deepesh Jha", "managerId": "kkasparek", "defaultShift": "A"}, {"id": "e8", "name": "B V Hemanth Kumar", "managerId": "kkasparek", "defaultShift": "A"}, {"id": "e9", "name": "Karthick S", "managerId": "kkasparek", "defaultShift": "A"}, {"id": "e10", "name": "Diksha Thakur", "managerId": "dmillen", "defaultShift": "B"}, {"id": "e11", "name": "Suyash Pradhan", "managerId": "dmillen", "defaultShift": "B"}, {"id": "e12", "name": "Ashifahammad Momin", "managerId": "dmillen", "defaultShift": "B"}, {"id": "e13", "name": "Rahul Kumar", "managerId": "dmillen", "defaultShift": "B"}, {"id": "e14", "name": "Gopika Krishnan G", "managerId": "lmorales", "defaultShift": "B"}, {"id": "e15", "name": "Mamatha T L", "managerId": "lmorales", "defaultShift": "B"}, {"id": "e16", "name": "Rachita S", "managerId": "lmorales", "defaultShift": "B"}, {"id": "e17", "name": "Raguru Suneelkumar", "managerId": "zahmed", "defaultShift": "B"}, {"id": "e18", "name": "Vijay Harshlal Patel", "managerId": "zahmed", "defaultShift": "B"}, {"id": "e19", "name": "Vishvanatha Raddy", "managerId": "nnhem", "defaultShift": "B"}, {"id": "e20", "name": "Brijesh Pande", "managerId": "nnhem", "defaultShift": "B"}, {"id": "e21", "name": "Leeban S", "managerId": "aparslow", "defaultShift": "C"}, {"id": "e22", "name": "Anil Parameswarappa", "managerId": "aparslow", "defaultShift": "C"}, {"id": "e23", "name": "Soumil Srivastava", "managerId": "rpatel", "defaultShift": "D"}, {"id": "e24", "name": "Shubham Anand", "managerId": "rpatel", "defaultShift": "B"}, {"id": "e25", "name": "Binesh Kumar Surishetty", "managerId": "rpatel", "defaultShift": "B"}, {"id": "e26", "name": "Sujith K", "managerId": "ptemple", "defaultShift": "B"}, {"id": "e27", "name": "Chakali Siva", "managerId": "ptemple", "defaultShift": "B"}, {"id": "e28", "name": "Santosh Kumar Cheekati", "managerId": "psimpson", "defaultShift": "D"}, {"id": "e29", "name": "Boddu Gangu Naidu", "managerId": "psimpson", "defaultShift": "D"}, {"id": "e30", "name": "Neelaveni Kedem", "managerId": "psimpson", "defaultShift": "B"}, {"id": "e31", "name": "Lakshmi Samyuktha Bodanapati", "managerId": "mvartanoff", "defaultShift": "A"}, {"id": "e32", "name": "Kumar Gaurav", "managerId": "mvartanoff", "defaultShift": "A"}, {"id": "e33", "name": "Sudheer Kamath N", "managerId": "adeep", "defaultShift": "E"}, {"id": "e34", "name": "Kishor Jadhav", "managerId": "adeep", "defaultShift": "B"}, {"id": "e35", "name": "Seelam Deep", "managerId": "adeep", "defaultShift": "A"}, {"id": "e36", "name": "Sushant Gharge", "managerId": "adeep", "defaultShift": "B"}, {"id": "e37", "name": "Siddesh V M", "managerId": "adeep", "defaultShift": "B"}, {"id": "e38", "name": "Apoorva Hegde", "managerId": "adeep", "defaultShift": "E"}, {"id": "e39", "name": "ManiKandan R", "managerId": "bhall", "defaultShift": "A"}, {"id": "e40", "name": "Ramya Rajanna", "managerId": "bpower", "defaultShift": "B"}, {"id": "e41", "name": "Tarun Kumar", "managerId": "ccunha", "defaultShift": "B"}, {"id": "e42", "name": "Ramu Gangasani", "managerId": "ccunha", "defaultShift": "B"}, {"id": "e43", "name": "Mohammed Shafahad", "managerId": "deepas", "defaultShift": "B"}, {"id": "e44", "name": "Saswati Dash", "managerId": "deepas", "defaultShift": "B"}, {"id": "e45", "name": "Vishnu Vishwanath", "managerId": "deepas", "defaultShift": "B"}, {"id": "e46", "name": "Susmita Dutta", "managerId": "eoushana", "defaultShift": "D"}, {"id": "e47", "name": "Susant Samantaray", "managerId": "eoushana", "defaultShift": "D"}, {"id": "e48", "name": "Rakesh Barik", "managerId": "eoushana", "defaultShift": "A"}, {"id": "e49", "name": "Aman Deep", "managerId": "eoushana", "defaultShift": "D"}, {"id": "e50", "name": "Madhusudan Gour", "managerId": "eoushana", "defaultShift": "A"}, {"id": "e51", "name": "Vivek Sequeira", "managerId": "eoushana", "defaultShift": "B"}, {"id": "e52", "name": "Prerna Kiran", "managerId": "nfederoff", "defaultShift": "A"}, {"id": "e53", "name": "Sumaiya Mumtaz", "managerId": "jmiller", "defaultShift": "A"}, {"id": "e54", "name": "Deepa Kumari S", "managerId": "cwillis", "defaultShift": "B"}, {"id": "e55", "name": "Krishanu Das", "managerId": "kthompkins", "defaultShift": "D"}, {"id": "e56", "name": "Bhuvaneshwaran U", "managerId": "ktilavalli", "defaultShift": "B"}, {"id": "e57", "name": "Vijayalakshmi A", "managerId": "ktilavalli", "defaultShift": "B"}, {"id": "e58", "name": "Nikhita Kalal", "managerId": "k.das", "defaultShift": "B"}, {"id": "e59", "name": "Aman Malviya", "managerId": "k.das", "defaultShift": "D"}, {"id": "e60", "name": "Karun Krishna", "managerId": "k.das", "defaultShift": "D"}, {"id": "e61", "name": "Praveen Raj S B", "managerId": "k.das", "defaultShift": "D"}, {"id": "e62", "name": "Navya AV", "managerId": "k.das", "defaultShift": "B"}, {"id": "e63", "name": "Shashank BV", "managerId": "k.das", "defaultShift": "A"}, {"id": "e64", "name": "Suresh Kumar Sethuraman", "managerId": "k.das", "defaultShift": "D"}, {"id": "e65", "name": "Rahul BHR", "managerId": "k.das", "defaultShift": "B"}, {"id": "e66", "name": "Preston D'Souza", "managerId": "kjaura", "defaultShift": "B"}, {"id": "e67", "name": "Vijay Kumar Avula", "managerId": "rfelix", "defaultShift": "B"}, {"id": "e68", "name": "Amar B A", "managerId": "rfelix", "defaultShift": "B"}, {"id": "e69", "name": "Sanjay K", "managerId": "rfelix", "defaultShift": "B"}, {"id": "e70", "name": "Vijaya Kumar K P", "managerId": "rfelix", "defaultShift": "B"}, {"id": "e71", "name": "Vikash Gupta", "managerId": "rfelix", "defaultShift": "B"}, {"id": "e72", "name": "Bhavnesh Kumar", "managerId": "rfelix", "defaultShift": "B"}, {"id": "e73", "name": "Anand Gupta", "managerId": "rfelix", "defaultShift": "B"}, {"id": "e74", "name": "Rajeev Hombli", "managerId": "mhenderson", "defaultShift": "A"}, {"id": "e75", "name": "Bhaskar Baruah", "managerId": "mmontaruli", "defaultShift": "B"}, {"id": "e76", "name": "Manisha Jha", "managerId": "mmontaruli", "defaultShift": "B"}, {"id": "e77", "name": "Jalsha Chakma", "managerId": "mmontaruli", "defaultShift": "B"}, {"id": "e78", "name": "Nilagni Mandal", "managerId": "mmontaruli", "defaultShift": "B"}, {"id": "e79", "name": "Ruchi Mathapati", "managerId": "mmontaruli", "defaultShift": "B"}, {"id": "e80", "name": "Syed Umer Ahmed", "managerId": "mmontaruli", "defaultShift": "B"}, {"id": "e81", "name": "Syed Salman", "managerId": "mmontaruli", "defaultShift": "B"}, {"id": "e82", "name": "Deepak Yesodharan", "managerId": "nthapliyal", "defaultShift": "A"}, {"id": "e83", "name": "Muthu Lavanya S", "managerId": "nthapliyal", "defaultShift": "A"}, {"id": "e84", "name": "Arun Kumar B", "managerId": "nthapliyal", "defaultShift": "A"}, {"id": "e85", "name": "Rajarshi Mukherjee", "managerId": "mharvan", "defaultShift": "B"}, {"id": "e86", "name": "Neha Thapliyal", "managerId": "mharvan", "defaultShift": "A"}, {"id": "e87", "name": "Shreya Chandak", "managerId": "dpatil", "defaultShift": "A"}, {"id": "e88", "name": "Avinash KS", "managerId": "dpatil", "defaultShift": "A"}, {"id": "e89", "name": "SHREYA BHIMSARIA", "managerId": "dpatil", "defaultShift": "A"}, {"id": "e90", "name": "Krishna Kamal", "managerId": "bblackhurst", "defaultShift": "A"}, {"id": "e91", "name": "Kiran N", "managerId": "ksmedley", "defaultShift": "B"}, {"id": "e92", "name": "Vinod Kumar TV", "managerId": "ksmedley", "defaultShift": "A"}, {"id": "e93", "name": "Gundra Hanumantha Reddy", "managerId": "dpedroso", "defaultShift": "A"}, {"id": "e94", "name": "Utkarsh Bajpai", "managerId": "rbarik", "defaultShift": "B"}, {"id": "e95", "name": "Sujata Kh", "managerId": "rbarik", "defaultShift": "B"}, {"id": "e96", "name": "Shiva Thirupathi", "managerId": "rbarik", "defaultShift": "D"}, {"id": "e97", "name": "Kumaresh Kaliyan", "managerId": "rbarik", "defaultShift": "B"}, {"id": "e98", "name": "Arockia Jebas", "managerId": "rbarik", "defaultShift": "D"}, {"id": "e99", "name": "Sravanthi G", "managerId": "rbarik", "defaultShift": "B"}, {"id": "e100", "name": "Rehan Siddique", "managerId": "rbarik", "defaultShift": "A"}, {"id": "e101", "name": "Vivek Bhat", "managerId": "rbarik", "defaultShift": "A"}, {"id": "e102", "name": "Chethan HB", "managerId": "rbarik", "defaultShift": "A"}, {"id": "e103", "name": "Divya shree G", "managerId": "vsequeira", "defaultShift": "A"}, {"id": "e104", "name": "Abhishek Sree", "managerId": "vsequeira", "defaultShift": "A"}, {"id": "e105", "name": "Umesh H", "managerId": "vsequeira", "defaultShift": "D"}, {"id": "e106", "name": "Krishna Kamath", "managerId": "vsequeira", "defaultShift": "B"}, {"id": "e107", "name": "Praveen Reddi", "managerId": "vsequeira", "defaultShift": "A"}, {"id": "e108", "name": "Amol Sonje", "managerId": "vsequeira", "defaultShift": "D"}, {"id": "e109", "name": "Ranjani S", "managerId": "vsequeira", "defaultShift": "D"}, {"id": "e110", "name": "Swagath Shetty", "managerId": "vsequeira", "defaultShift": "B"}, {"id": "e111", "name": "Sasmita Gohain", "managerId": "scabrera", "defaultShift": "E"}, {"id": "e112", "name": "Priyanka Awasthi", "managerId": "smumtaz", "defaultShift": "A"}, {"id": "e113", "name": "Kiranraj Tilavalli", "managerId": "smumtaz", "defaultShift": "B"}, {"id": "e114", "name": "Suganya Shankar", "managerId": "vfilipkova", "defaultShift": "D"}, {"id": "e115", "name": "Ashutosh", "managerId": "rajarshi", "defaultShift": "A"}, {"id": "e116", "name": "Ashok", "managerId": "rajarshi", "defaultShift": "A"}, {"id": "e117", "name": "Don", "managerId": "rajarshi", "defaultShift": "D"}, {"id": "e118", "name": "Aman", "managerId": "deepak", "defaultShift": "B"}, {"id": "e119", "name": "Amarnath", "managerId": "deepak", "defaultShift": "C"}, {"id": "e120", "name": "Dan", "managerId": "deepak", "defaultShift": "B"}];
+const SEED_USERS=[{"uid": "admin", "name": "Admin", "role": "admin", "rawPw": "admin@roster"}, {"uid": "dbeauchamp", "name": "Beauchamp, David", "role": "manager", "rawPw": "50535"}, {"uid": "kevinb", "name": "Beauregard, Kevin", "role": "manager", "rawPw": "50567"}, {"uid": "rgrimes", "name": "Grimes, Robert", "role": "manager", "rawPw": "50603"}, {"uid": "kkasparek", "name": "Kasparek, Kurt", "role": "manager", "rawPw": "50573"}, {"uid": "dmillen", "name": "Millen, Daniel", "role": "manager", "rawPw": "50532"}, {"uid": "lmorales", "name": "Morales, Levi", "role": "manager", "rawPw": "50577"}, {"uid": "zahmed", "name": "Mulla Zaheer A", "role": "manager", "rawPw": "50983"}, {"uid": "nnhem", "name": "Nhem, Narin", "role": "manager", "rawPw": "50592"}, {"uid": "aparslow", "name": "Parslow, Amy", "role": "manager", "rawPw": "50501"}, {"uid": "rpatel", "name": "Patel, Rakesh", "role": "manager", "rawPw": "50488"}, {"uid": "ptemple", "name": "Paul Temple", "role": "manager", "rawPw": "50958"}, {"uid": "psimpson", "name": "Simpson, Paula", "role": "manager", "rawPw": "50597"}, {"uid": "mvartanoff", "name": "Vartanoff, Martha", "role": "manager", "rawPw": "50586"}, {"uid": "adeep", "name": "Deep, Aman", "role": "manager", "rawPw": "22225"}, {"uid": "bhall", "name": "Brad Hall", "role": "manager", "rawPw": "20066"}, {"uid": "bpower", "name": "Brenda Power", "role": "manager", "rawPw": "17161"}, {"uid": "ccunha", "name": "da Cunha, Clovis M.", "role": "manager", "rawPw": "50163"}, {"uid": "deepas", "name": "Deepa Kumari S", "role": "manager", "rawPw": "23917"}, {"uid": "eoushana", "name": "Edmond Oushanayou", "role": "manager", "rawPw": "18880"}, {"uid": "nfederoff", "name": "Federoff, Nakeita", "role": "manager", "rawPw": "24091"}, {"uid": "jmiller", "name": "Jamie Miller", "role": "manager", "rawPw": "50017"}, {"uid": "cwillis", "name": "Christina Willis", "role": "manager", "rawPw": "50520"}, {"uid": "kthompkins", "name": "Kim Thompkins", "role": "manager", "rawPw": "50569"}, {"uid": "ktilavalli", "name": "Kiranraj Tilavalli", "role": "manager", "rawPw": "22569"}, {"uid": "k.das", "name": "Krishanu Das", "role": "manager", "rawPw": "50961"}, {"uid": "kjaura", "name": "Jaura, Kulbir", "role": "manager", "rawPw": "17942"}, {"uid": "rfelix", "name": "Felix, Reyolin", "role": "manager", "rawPw": "17699"}, {"uid": "mhenderson", "name": "Mark Merickel", "role": "manager", "rawPw": "12141"}, {"uid": "mmontaruli", "name": "Matthew Montaruli", "role": "manager", "rawPw": "50470"}, {"uid": "nthapliyal", "name": "Neha Thapliyal", "role": "manager", "rawPw": "50166"}, {"uid": "mharvan", "name": "Melissa Harvan", "role": "manager", "rawPw": "22445"}, {"uid": "dpatil", "name": "OpBroek (dpatil)", "role": "manager", "rawPw": "50846"}, {"uid": "bblackhurst", "name": "OpBroek (bblackhurst)", "role": "manager", "rawPw": "50907"}, {"uid": "ksmedley", "name": "OpBroek (ksmedley)", "role": "manager", "rawPw": "50906"}, {"uid": "dpedroso", "name": "Pedroso, Danrlei Avila", "role": "manager", "rawPw": "50943"}, {"uid": "rbarik", "name": "Barik, Rakesh", "role": "manager", "rawPw": "20289"}, {"uid": "vsequeira", "name": "Sequeira, Vivek H.", "role": "manager", "rawPw": "50465"}, {"uid": "scabrera", "name": "Cabrera, Sherilyn", "role": "manager", "rawPw": "50939"}, {"uid": "smumtaz", "name": "Sumaiya Mumtaz", "role": "manager", "rawPw": "22129"}, {"uid": "vfilipkova", "name": "Veronika Filipkova", "role": "manager", "rawPw": "50832"}, {"uid": "rajarshi", "name": "Raj", "role": "manager", "rawPw": "welcome@123"}, {"uid": "deepak", "name": "Deepak", "role": "manager", "rawPw": "welcome@123"}];
+
+// ─── LOCAL STATE (users, managers, employees — structural config) ─────────────
+let state = loadState();
+function defaultState(){
+  const users={};
+  SEED_USERS.forEach(u=>{users[u.uid]={role:u.role,name:u.name,pwHash:hashStr(String(u.rawPw))};});
+  const managers={};
+  Object.entries(SEED_MANAGERS).forEach(([uid,m])=>{managers[uid]={name:m.name,username:uid,email:m.email};});
+  return{users,managers,employees:JSON.parse(JSON.stringify(SEED_EMPLOYEES)),reassignLog:[]};
+}
+function loadState(){try{const s=localStorage.getItem('cai_state_v2');if(s)return JSON.parse(s);}catch(e){}return defaultState();}
+function saveState(){localStorage.setItem('cai_state_v2',JSON.stringify(state));}
+function hashStr(str){let h=0;for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}return'h_'+Math.abs(h).toString(36)+'_'+str.length;}
+
+// ─── DB STATUS ────────────────────────────────────────────────────────────────
+function setDbBadge(status, msg){
+  const el=document.getElementById('db-badge');
+  if(!el) return;
+  el.className='db-badge'+(status==='ok'?' ':status==='error'?' error':' connecting');
+  el.textContent=(status==='ok'?'⬤ ':status==='error'?'⬤ ':'◌ ')+msg;
+}
+
+async function pingSupabase(){
+  try{
+    await sbGet('submissions','?limit=1');
+    setDbBadge('ok','Supabase connected');
+  }catch(e){
+    setDbBadge('error','DB error — check config');
+    showToast('Cannot reach Supabase — check your URL and key','error');
+  }
+}
+
+// ─── SESSION ──────────────────────────────────────────────────────────────────
+let session=null;
+function doLogin(){
+  const user=document.getElementById('login-user').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-error');
+  const u=state.users[user];
+  if(!u||u.pwHash!==hashStr(pass)){err.style.display='block';return;}
+  err.style.display='none';
+  session={userId:user,role:u.role,name:u.name};
+  document.getElementById('login-screen').style.display='none';
+  const app=document.getElementById('app');app.style.display='flex';app.style.flexDirection='column';
+  document.getElementById('topbar-user').textContent=u.name;
+  const rb=document.getElementById('topbar-role');rb.textContent=u.role==='admin'?'Admin':'Manager';rb.className='role-badge '+u.role;
+  buildTabs();showTab(session.role==='admin'?'report':'roster');
+  pingSupabase();
+}
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+function doLogout(){session=null;weekOffset=0;document.getElementById('login-screen').style.display='flex';document.getElementById('app').style.display='none';document.getElementById('login-user').value='';document.getElementById('login-pass').value='';}
+
+function buildTabs(){
+  const tabs=session.role==='admin'
+    ?[['report','📊 Report'],['directory','📁 Directory'],['manage','👥 Manage Team'],['password','🔑 Change Password']]
+    :[['roster','📋 My Team Shifts'],['password','🔑 Change Password']];
+  document.getElementById('main-tabs').innerHTML=tabs.map(([id,l])=>`<div class="tab" id="tab-${id}" onclick="showTab('${id}')">${l}</div>`).join('');
+}
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  const t=document.getElementById('tab-'+id);if(t)t.classList.add('active');
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  if(id==='roster')renderRoster();
+  if(id==='report')loadReport();
+  if(id==='manage')renderManage();
+  if(id==='directory')renderDirectory();
+}
+
+// ─── WEEK ─────────────────────────────────────────────────────────────────────
+let weekOffset=0;
+let currentWeekLocked=false;
+let currentWeekData=null; // loaded from Supabase for current manager+week
+
+function getWeekStart(off){const d=new Date();const dy=d.getDay();d.setDate(d.getDate()-dy+(dy===0?-6:1)+off*7);d.setHours(0,0,0,0);return d;}
+function weekKey(d){return d.toISOString().slice(0,10);}
+function weekLabel(d){const e=new Date(d);e.setDate(d.getDate()+6);const f=x=>x.toLocaleDateString('en-GB',{day:'numeric',month:'short'});return`W${getWN(d)}: ${f(d)} – ${f(e)}`;}
+function getWN(d){const s=new Date(d.getFullYear(),0,1);return Math.ceil((((d-s)/86400000)+s.getDay()+1)/7);}
+function changeWeek(dir){weekOffset+=dir;renderRoster();}
+
+// ─── BULK ─────────────────────────────────────────────────────────────────────
+let bulkDays='all';
+function toggleBulkDay(btn){
+  if(currentWeekLocked) return;
+  document.querySelectorAll('.bulk-day-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  bulkDays=btn.dataset.day==='all'?'all':parseInt(btn.dataset.day);
+}
+function applyShiftStyle(sel){sel.style.background=shiftBg(sel.value);sel.style.color=shiftFg(sel.value);sel.style.borderColor=shiftBorder(sel.value);}
+function applyBulkShift(shift){
+  if(currentWeekLocked){showToast('This week is locked and cannot be edited','error');return;}
+  state.employees.filter(e=>e.managerId===session.userId).forEach(emp=>{
+    const days=bulkDays==='all'?[0,1,2,3,4,5,6]:[bulkDays];
+    days.forEach(di=>{const sel=document.getElementById(`sh_${emp.id}_${di}`);if(sel&&!sel.disabled){sel.value=shift;applyShiftStyle(sel);}});
+  });
+  showToast(`"${shift==='TO'?'Time Off':shift==='OFF'?'Clear':shift}" applied to ${bulkDays==='all'?'all days':DAYS[bulkDays]}`,'success');
+}
+
+// ─── ROSTER ───────────────────────────────────────────────────────────────────
+async function renderRoster(){
+  const ws=getWeekStart(weekOffset),wk=weekKey(ws);
+  document.getElementById('week-label').textContent=weekLabel(ws);
+  const myEmps=state.employees.filter(e=>e.managerId===session.userId);
+
+  // Load existing submissions for this manager+week from Supabase
+  showLoading('Loading shifts…');
+  let savedRows=[];
+  try{
+    savedRows = await sbGet('submissions',`?manager_id=eq.${session.userId}&week_key=eq.${wk}`);
+  }catch(e){
+    showToast('Could not load from Supabase — showing local defaults','error');
+  }
+  hideLoading();
+
+  currentWeekLocked = savedRows.length > 0 && savedRows[0].locked === true;
+  currentWeekData = savedRows;
+
+  // Summary
+  const weeksCount = await countManagerWeeks();
+  document.getElementById('roster-summary').innerHTML=`
+    <div class="summary-card"><div class="num">${myEmps.length}</div><div class="lbl">My employees</div></div>
+    <div class="summary-card"><div class="num">${weeksCount}</div><div class="lbl">Weeks submitted</div></div>
+    <div class="summary-card"><div class="num">${savedRows.length>0?'✓':'–'}</div><div class="lbl">This week</div></div>`;
+
+  document.getElementById('roster-title').textContent=(state.managers[session.userId]?.name||'My Team')+' — Shift Entry';
+
+  // Locked banner
+  const banner=document.getElementById('locked-banner');
+  const bulkWrap=document.getElementById('bulk-bar-wrap');
+  if(currentWeekLocked && savedRows.length>0){
+    banner.style.display='flex';
+    document.getElementById('locked-sub').textContent='Submitted on '+new Date(savedRows[0].submitted_at).toLocaleString();
+    bulkWrap.style.display='none';
+  } else {
+    banner.style.display='none';
+    bulkWrap.style.display='block';
+  }
+
+  // Last submitted hint
+  document.getElementById('last-submitted').textContent = savedRows.length>0
+    ? 'Submitted: '+new Date(savedRows[0].submitted_at).toLocaleString()
+    : 'Not yet submitted for this week';
+
+  // Action button
+  const actionDiv=document.getElementById('action-btns');
+  if(currentWeekLocked){
+    actionDiv.innerHTML=`<button class="btn-locked" disabled>🔒 Submitted &amp; Locked</button>`;
+  } else {
+    actionDiv.innerHTML=`<button class="btn-submit" onclick="submitRoster()">Submit Shifts</button>`;
+  }
+
+  // Build table header
+  document.getElementById('roster-thead').innerHTML=
+    `<th class="left" style="min-width:140px">Employee</th>`+
+    DAYS.map(d=>`<th style="min-width:82px">${d}<br/><span style="font-size:8px;color:#f59e0b">🔔 on call</span></th>`).join('')+
+    `<th class="left" style="min-width:150px">Comments</th><th>Status</th>`;
+
+  if(!myEmps.length){document.getElementById('roster-body').innerHTML=`<tr><td colspan="11" class="empty-state">No employees assigned to your team.</td></tr>`;return;}
+
+  // Select-all row (only if not locked)
+  const saRow = currentWeekLocked ? '' : `<tr class="sa-row">
+    <td><div class="sa-label">⬇ Apply<br/>to all</div></td>
+    ${DAYS.map((_,di)=>`<td><div class="day-cell">
+      <select class="shift-select" id="sa_sh_${di}" style="background:${shiftBg('OFF')};color:${shiftFg('OFF')};border-color:${shiftBorder('OFF')}" onchange="applySelectAllDay(${di},this.value)">
+        <option value="">— shift —</option>
+        ${SHIFT_OPTIONS.map(o=>`<option value="${o}">${o==='TO'?'Time Off':o==='OFF'?'Off':o}</option>`).join('')}
+      </select>
+      <label class="oncall-day"><input type="checkbox" id="sa_oc_${di}" onchange="applyOnCallAllDay(${di},this.checked)"/><span class="oncall-day-label">all on call</span></label>
+    </div></td>`).join('')}
+    <td></td><td></td></tr>`;
+
+  const empRows=myEmps.map(emp=>{
+    // Find this employee's row in saved data
+    const saved=savedRows.find(r=>r.employee_id===emp.id);
+    const empShifts=saved ? DAY_KEYS.map(k=>saved[k]||'OFF') : [emp.defaultShift||'OFF',emp.defaultShift||'OFF',emp.defaultShift||'OFF',emp.defaultShift||'OFF',emp.defaultShift||'OFF','TO','TO'];
+    const empOnCall=saved ? DAY_KEYS.map(k=>saved[k+'_oc']||false) : Array(7).fill(false);
+    const empComment=saved?saved.comment||'':'';
+    const locked=currentWeekLocked;
+
+    const dayCells=DAYS.map((_,di)=>{
+      const sh=empShifts[di]||'OFF',oc=empOnCall[di]||false;
+      if(locked){
+        return`<td><div class="day-cell">
+          <span class="shift-badge-ro" style="background:${shiftBg(sh)};color:${shiftFg(sh)}">${sh==='TO'?'TO':sh==='OFF'?'Off':sh}</span>
+          ${oc?`<span style="font-size:9px;color:#d97706;font-weight:700">🔔 on call</span>`:`<span style="font-size:9px;color:#e2e8f0">·</span>`}
+        </div></td>`;
+      }
+      return`<td><div class="day-cell">
+        <select class="shift-select" id="sh_${emp.id}_${di}" style="background:${shiftBg(sh)};color:${shiftFg(sh)};border-color:${shiftBorder(sh)}" onchange="applyShiftStyle(this)">
+          ${SHIFT_OPTIONS.map(o=>`<option value="${o}"${o===sh?' selected':''}>${o==='TO'?'Time Off':o==='OFF'?'Off':o}</option>`).join('')}
+        </select>
+        <label class="oncall-day"><input type="checkbox" id="oc_${emp.id}_${di}" ${oc?'checked':''} onchange="onCallChange(this)"/><span class="oncall-day-label">${oc?'on call':''}</span></label>
+      </div></td>`;
+    }).join('');
+
+    const pill=locked?'<span class="status-pill locked">🔒 Locked</span>':'<span class="status-pill pending">Pending</span>';
+    const commentHtml=locked
+      ?`<div style="font-size:11px;color:#374151;padding:4px 2px">${empComment||'<span style="color:#cbd5e1">No comment</span>'}</div>`
+      :`<textarea class="comment-input" id="cm_${emp.id}" rows="2" placeholder="Add a comment…">${empComment}</textarea>`;
+
+    return`<tr><td><div class="emp-name">${emp.name}</div></td>${dayCells}<td>${commentHtml}</td><td style="text-align:center">${pill}</td></tr>`;
+  }).join('');
+
+  document.getElementById('roster-body').innerHTML=saRow+empRows;
+
+  if(!currentWeekLocked){
+    myEmps.forEach(emp=>{DAYS.forEach((_,di)=>{const cb=document.getElementById(`oc_${emp.id}_${di}`);if(cb)cb.addEventListener('change',function(){const lbl=this.closest('.oncall-day').querySelector('.oncall-day-label');lbl.textContent=this.checked?'on call':'';});});});
+  }
+
+  document.getElementById('shift-legend').innerHTML=
+    Object.entries(SHIFT_LABELS).map(([k,v])=>`<div class="legend-item"><div class="legend-dot" style="background:${shiftBg(k)};border:1px solid ${shiftBorder(k)}"></div><strong>${k==='OFF'?'Off':k}</strong> — ${v}</div>`).join('')
+    +`<div class="legend-item"><div class="legend-dot" style="background:#fef3c7;border:1px solid #fcd34d"></div>🔔 On Call — per day</div>`;
+}
+
+async function countManagerWeeks(){
+  try{
+    const rows=await sbGet('submissions',`?manager_id=eq.${session.userId}&select=week_key&limit=500`);
+    return new Set(rows.map(r=>r.week_key)).size;
+  }catch(e){return 0;}
+}
+
+function onCallChange(cb){const lbl=cb.closest('.oncall-day').querySelector('.oncall-day-label');lbl.textContent=cb.checked?'on call':'';}
+
+function applySelectAllDay(di,shift){
+  if(!shift||currentWeekLocked)return;
+  state.employees.filter(e=>e.managerId===session.userId).forEach(emp=>{const sel=document.getElementById(`sh_${emp.id}_${di}`);if(sel&&!sel.disabled){sel.value=shift;applyShiftStyle(sel);}});
+  const sa=document.getElementById(`sa_sh_${di}`);if(sa){sa.value='';sa.style.background=shiftBg('OFF');sa.style.color=shiftFg('OFF');sa.style.borderColor=shiftBorder('OFF');}
+  showToast(`${shift==='TO'?'Time Off':shift==='OFF'?'Cleared':shift} → ${DAYS[di]} for all`,'success');
+}
+function applyOnCallAllDay(di,checked){
+  if(currentWeekLocked)return;
+  state.employees.filter(e=>e.managerId===session.userId).forEach(emp=>{const cb=document.getElementById(`oc_${emp.id}_${di}`);if(cb){cb.checked=checked;const lbl=cb.closest('.oncall-day').querySelector('.oncall-day-label');if(lbl)lbl.textContent=checked?'on call':'';}});
+  showToast(`On Call ${checked?'set':'cleared'} for ${DAYS[di]}`,'success');
+}
+
+async function submitRoster(){
+  if(currentWeekLocked){showToast('This week is already locked','error');return;}
+  const ws=getWeekStart(weekOffset),wk=weekKey(ws),wl=weekLabel(ws);
+  const myEmps=state.employees.filter(e=>e.managerId===session.userId);
+  if(!myEmps.length){showToast('No employees in your team','error');return;}
+
+  // Confirm before locking
+  if(!confirm(`Submit shifts for ${wl}?
+
+Once submitted, you will not be able to edit this week's shifts. Only the admin can unlock it.`)){return;}
+
+  showLoading('Saving to Supabase…');
+  try{
+    const rows=myEmps.map(emp=>{
+      const shifts=DAY_KEYS.map((_,di)=>{const el=document.getElementById(`sh_${emp.id}_${di}`);return el?el.value:(emp.defaultShift||'OFF');});
+      const onCalls=DAY_KEYS.map((_,di)=>{const cb=document.getElementById(`oc_${emp.id}_${di}`);return cb?cb.checked:false;});
+      const cm=document.getElementById(`cm_${emp.id}`);
+      const row={
+        manager_id:session.userId, manager_name:state.managers[session.userId]?.name||session.userId,
+        week_key:wk, week_label:wl,
+        employee_id:emp.id, employee_name:emp.name,
+        locked:true, submitted_at:new Date().toISOString(),
+        comment:cm?cm.value.trim():''
+      };
+      DAY_KEYS.forEach((k,i)=>{row[k]=shifts[i];row[k+'_oc']=onCalls[i];});
+      return row;
+    });
+    await sbUpsert('submissions',rows);
+    hideLoading();
+    showToast(`✓ Shifts locked for ${wl}. This week is now read-only.`,'success');
+    renderRoster();
+  }catch(e){
+    hideLoading();
+    showToast('Error saving to Supabase: '+e.message,'error');
+  }
+}
+
+// ─── REPORT (admin) ───────────────────────────────────────────────────────────
+let reportRows=[];
+
+async function loadReport(){
+  showLoading('Loading report from Supabase…');
+  try{
+    reportRows = await sbGet('submissions','?order=week_key.desc,manager_name.asc&limit=5000');
+    hideLoading();
+    renderReport();
+  }catch(e){
+    hideLoading();
+    showToast('Error loading report: '+e.message,'error');
+  }
+}
+
+function renderReport(){
+  const fmgr=document.getElementById('filter-manager'),fwk=document.getElementById('filter-week'),fsh=document.getElementById('filter-shift'),foc=document.getElementById('filter-oncall');
+  const mgrs=[...new Set(reportRows.map(r=>r.manager_id))].map(id=>({id,name:reportRows.find(r=>r.manager_id===id)?.manager_name||id})).sort((a,b)=>a.name.localeCompare(b.name));
+  fmgr.innerHTML='<option value="">All managers</option>'+mgrs.map(m=>`<option value="${m.id}">${m.name}</option>`).join('');
+  const weeks=[...new Set(reportRows.map(r=>r.week_key))].sort().reverse();
+  fwk.innerHTML='<option value="">All weeks</option>'+weeks.map(w=>`<option value="${w}">${w}</option>`).join('');
+
+  const selMgr=fmgr.value,selWk=fwk.value,selSh=fsh.value,selOc=foc.value;
+
+  const totalMgrs=new Set(reportRows.map(r=>r.manager_id)).size;
+  const totalEmps=new Set(reportRows.map(r=>r.employee_id)).size;
+  const totalSubs=new Set(reportRows.map(r=>r.manager_id+'::'+r.week_key)).size;
+  document.getElementById('admin-summary').innerHTML=`
+    <div class="summary-card"><div class="num">${totalMgrs||Object.keys(state.managers).length}</div><div class="lbl">Managers</div></div>
+    <div class="summary-card"><div class="num">${totalEmps||state.employees.length}</div><div class="lbl">Employees</div></div>
+    <div class="summary-card"><div class="num">${totalSubs}</div><div class="lbl">Submissions</div></div>`;
+
+  document.getElementById('report-thead').innerHTML=
+    `<th class="left">Manager</th><th class="left">Employee</th><th class="left">Week</th>`+
+    DAYS.map(d=>`<th>${d}<br/><span style="font-size:8px;color:#f59e0b">🔔</span></th>`).join('')+
+    `<th class="left">Comments</th><th class="left">Submitted</th><th>Actions</th>`;
+
+  let filtered=reportRows.filter(r=>
+    (!selMgr||r.manager_id===selMgr)&&
+    (!selWk||r.week_key===selWk)&&
+    (!selSh||DAY_KEYS.some(k=>r[k]===selSh))&&
+    (!selOc||selOc!=='yes'||DAY_KEYS.some(k=>r[k+'_oc']))
+  );
+
+  const tbody=document.getElementById('report-body');
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="14" class="empty-state">No submissions yet. Managers need to submit their shifts first.</td></tr>`;return;}
+
+  tbody.innerHTML=filtered.map(r=>{
+    const shifts=DAY_KEYS.map(k=>r[k]||'OFF');
+    const onCalls=DAY_KEYS.map(k=>r[k+'_oc']||false);
+    return`<tr>
+      <td style="font-weight:500;font-size:11px">${r.manager_name}</td>
+      <td style="font-size:11px">${r.employee_name}</td>
+      <td style="font-size:10px;white-space:nowrap">${r.week_label||r.week_key}</td>
+      ${shifts.map((sh,di)=>`<td style="text-align:center"><div style="display:flex;flex-direction:column;align-items:center;gap:1px">
+        <span style="font-size:10px;font-weight:700;color:${shiftFg(sh)};background:${shiftBg(sh)};padding:1px 5px;border-radius:3px">${sh==='TO'?'TO':sh==='OFF'?'–':sh}</span>
+        ${onCalls[di]?'<span style="font-size:8px;color:#d97706">🔔</span>':'<span style="font-size:8px;color:#f1f5f9">·</span>'}
+      </div></td>`).join('')}
+      <td style="font-size:10px;color:#374151;max-width:140px">${r.comment||'<span style="color:#e2e8f0">—</span>'}</td>
+      <td style="font-size:9px;color:#94a3b8;white-space:nowrap">${new Date(r.submitted_at).toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</td>
+      <td style="text-align:center">${r.locked?`<button class="btn-unlock" onclick="openUnlock('${r.manager_id}','${r.week_key}','${r.manager_name}')">Unlock</button>`:'<span style="color:#cbd5e1;font-size:10px">—</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportExcel(){
+  if(!reportRows.length){showToast('No data to export','error');return;}
+  const header=['Manager','Employee','Week'];
+  DAYS.forEach(d=>{header.push(d+' Shift');header.push(d+' On Call');});
+  header.push('Comments','Submitted At','Locked');
+  const rows=[header];
+  reportRows.forEach(r=>{
+    const shifts=DAY_KEYS.map(k=>r[k]||'OFF');
+    const onCalls=DAY_KEYS.map(k=>r[k+'_oc']?'Yes':'No');
+    const row=[r.manager_name,r.employee_name,r.week_label||r.week_key];
+    shifts.forEach((sh,i)=>{row.push(sh==='TO'?'Time Off':sh==='OFF'?'Off':sh);row.push(onCalls[i]);});
+    row.push(r.comment||'',new Date(r.submitted_at).toLocaleString(),r.locked?'Yes':'No');
+    rows.push(row);
+  });
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols']=[{wch:18},{wch:22},{wch:20},...DAYS.flatMap(()=>[{wch:9},{wch:8}]),{wch:30},{wch:20},{wch:6}];
+  XLSX.utils.book_append_sheet(wb,ws,'Shift Report');
+  const lg=[['Code','Label','Timings'],['A','Type A','11:00 AM–1:30 PM'],['B','Type B','3:00–5:30 PM'],['C','Type C','—'],['D','Type D','6:30–7:30 PM'],['E','Type E','After 8:00 PM'],['TO','Time Off','—'],['Off','Not assigned','—']];
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(lg),'Shift Legend');
+  if(state.reassignLog?.length){
+    const lr=[['Employee','From Manager','To Manager','Date','By']];
+    state.reassignLog.forEach(r=>lr.push([r.empName,r.fromName,r.toName,r.at,r.by]));
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(lr),'Reassign Log');
+  }
+  XLSX.writeFile(wb,'CAI_ShiftRoster_'+new Date().toISOString().slice(0,10)+'.xlsx');
+  showToast('Excel report downloaded!','success');
+}
+
+// ─── UNLOCK (admin) ───────────────────────────────────────────────────────────
+let unlockTarget=null;
+function openUnlock(mgrId, wk, mgrName){
+  unlockTarget={mgrId,wk,mgrName};
+  document.getElementById('unlock-desc').textContent=`This will allow ${mgrName} to re-edit and resubmit shifts for ${wk}. Only do this if a correction is needed.`;
+  document.getElementById('unlock-modal').classList.add('open');
+}
+function closeUnlock(){document.getElementById('unlock-modal').classList.remove('open');unlockTarget=null;}
+async function confirmUnlock(){
+  if(!unlockTarget)return;
+  showLoading('Unlocking…');
+  try{
+    await sbPatch('submissions',{locked:false},`?manager_id=eq.${unlockTarget.mgrId}&week_key=eq.${unlockTarget.wk}`);
+    hideLoading();closeUnlock();
+    showToast(`${unlockTarget.mgrName}'s shifts for ${unlockTarget.wk} have been unlocked`,'success');
+    loadReport();
+  }catch(e){hideLoading();showToast('Unlock failed: '+e.message,'error');}
+}
+
+// ─── SEED EMPLOYEES TO SUPABASE ───────────────────────────────────────────────
+async function seedEmployeesToSupabase(){
+  if(!confirm(`This will upload all ${state.employees.length} employees to Supabase. Run this once after setup.`))return;
+  showLoading('Uploading employees…');
+  try{
+    const rows=state.employees.map(e=>({id:e.id,name:e.name,manager_id:e.managerId,default_shift:e.defaultShift||'B'}));
+    // Upload in batches of 50
+    for(let i=0;i<rows.length;i+=50){
+      await sbUpsert('employees',rows.slice(i,i+50));
+    }
+    hideLoading();showToast(`${state.employees.length} employees synced to Supabase ✓`,'success');
+  }catch(e){hideLoading();showToast('Seed failed: '+e.message,'error');}
+}
+
+// ─── MANAGE ───────────────────────────────────────────────────────────────────
+function renderManage(){
+  document.getElementById('manager-list').innerHTML=
+    Object.values(state.managers).sort((a,b)=>a.name.localeCompare(b.name)).map(m=>`<li>
+      <div><div class="name">${m.name}</div><div class="meta">@${m.username} · ${state.employees.filter(e=>e.managerId===m.username).length} employees</div></div>
+      <button class="btn-icon" onclick="removeManager('${m.username}')">✕</button>
+    </li>`).join('');
+  document.getElementById('employee-list').innerHTML=
+    state.employees.sort((a,b)=>a.name.localeCompare(b.name)).map(e=>`<li>
+      <div><div class="name">${e.name}</div><div class="meta">${state.managers[e.managerId]?.name||'Unassigned'}</div></div>
+      <div class="actions"><button class="btn-reassign" onclick="openReassign('${e.id}')">Reassign</button><button class="btn-icon" onclick="removeEmployee('${e.id}')">✕</button></div>
+    </li>`).join('');
+  document.getElementById('new-emp-mgr').innerHTML=Object.values(state.managers).sort((a,b)=>a.name.localeCompare(b.name)).map(m=>`<option value="${m.username}">${m.name}</option>`).join('');
+}
+function addManager(){
+  const name=document.getElementById('new-mgr-name').value.trim(),user=document.getElementById('new-mgr-user').value.trim().toLowerCase();
+  if(!name||!user){showToast('Enter both name and username.','error');return;}
+  if(state.users[user]){showToast('Username already exists.','error');return;}
+  state.managers[user]={name,username:user};state.users[user]={role:'manager',name,pwHash:hashStr('welcome@123')};
+  document.getElementById('new-mgr-name').value='';document.getElementById('new-mgr-user').value='';
+  saveState();renderManage();showToast(`"${name}" added. Default password: welcome@123`,'success');
+}
+function removeManager(uid){
+  if(!confirm(`Remove manager "${state.managers[uid]?.name}"?`))return;
+  delete state.managers[uid];delete state.users[uid];
+  state.employees.forEach(e=>{if(e.managerId===uid)e.managerId='';});
+  saveState();renderManage();showToast('Manager removed.','success');
+}
+function addEmployee(){
+  const name=document.getElementById('new-emp-name').value.trim(),mgr=document.getElementById('new-emp-mgr').value;
+  if(!name){showToast('Enter employee name.','error');return;}
+  const emp={id:'e'+Date.now(),name,managerId:mgr,defaultShift:'B'};
+  state.employees.push(emp);
+  sbUpsert('employees',[{id:emp.id,name:emp.name,manager_id:mgr,default_shift:'B'}]).catch(()=>{});
+  document.getElementById('new-emp-name').value='';
+  saveState();renderManage();showToast(`"${name}" added.`,'success');
+}
+function removeEmployee(id){
+  const emp=state.employees.find(e=>e.id===id);
+  if(!confirm(`Remove "${emp?.name}"?`))return;
+  state.employees=state.employees.filter(e=>e.id!==id);
+  sbDelete('employees',`?id=eq.${id}`).catch(()=>{});
+  saveState();renderManage();showToast('Employee removed.','success');
+}
+
+let reassignEmpId=null;
+function openReassign(empId){
+  const emp=state.employees.find(e=>e.id===empId);if(!emp)return;
+  reassignEmpId=empId;
+  document.getElementById('reassign-desc').textContent=`Move "${emp.name}" (currently: ${state.managers[emp.managerId]?.name||'Unassigned'}) to:`;
+  document.getElementById('reassign-select').innerHTML=Object.values(state.managers).sort((a,b)=>a.name.localeCompare(b.name)).filter(m=>m.username!==emp.managerId).map(m=>`<option value="${m.username}">${m.name}</option>`).join('');
+  document.getElementById('reassign-modal').classList.add('open');
+}
+function closeReassign(){document.getElementById('reassign-modal').classList.remove('open');reassignEmpId=null;}
+async function confirmReassign(){
+  if(!reassignEmpId)return;
+  const emp=state.employees.find(e=>e.id===reassignEmpId),newMgrId=document.getElementById('reassign-select').value;
+  if(!emp||!newMgrId){closeReassign();return;}
+  const fromName=state.managers[emp.managerId]?.name||'Unassigned',toName=state.managers[newMgrId]?.name||newMgrId;
+  if(!state.reassignLog)state.reassignLog=[];
+  state.reassignLog.push({empId:emp.id,empName:emp.name,fromId:emp.managerId,fromName,toId:newMgrId,toName,at:new Date().toISOString(),by:'admin'});
+  emp.managerId=newMgrId;
+  sbPatch('employees',{manager_id:newMgrId},`?id=eq.${emp.id}`).catch(()=>{});
+  try{
+    await sbUpsert('reassign_log',[{employee_id:emp.id,employee_name:emp.name,from_manager_id:emp.managerId,from_manager_name:fromName,to_manager_id:newMgrId,to_manager_name:toName,reassigned_by:'admin'}]);
+  }catch(e){}
+  saveState();closeReassign();renderManage();showToast(`"${emp.name}" reassigned to ${toName}`,'success');
+}
+
+// ─── PASSWORD ─────────────────────────────────────────────────────────────────
+function changePassword(){
+  const cur=document.getElementById('pw-current').value,nw=document.getElementById('pw-new').value,cf=document.getElementById('pw-confirm').value;
+  const u=state.users[session.userId];
+  if(hashStr(cur)!==u.pwHash){showToast('Current password is incorrect.','error');return;}
+  if(nw.length<6){showToast('Must be at least 6 characters.','error');return;}
+  if(nw!==cf){showToast('Passwords do not match.','error');return;}
+  u.pwHash=hashStr(nw);saveState();
+  document.getElementById('pw-current').value='';document.getElementById('pw-new').value='';document.getElementById('pw-confirm').value='';
+  showToast('Password updated!','success');
+}
+
+
+// ─── DIRECTORY ────────────────────────────────────────────────────────────────
+function renderDirectory(){
+  const search = (document.getElementById('dir-search')?.value||'').toLowerCase();
+  const totalMgrs = Object.keys(state.managers).length;
+  const totalEmps = state.employees.length;
+  document.getElementById('dir-summary').innerHTML=`
+    <div class="summary-card"><div class="num">${totalMgrs}</div><div class="lbl">Managers</div></div>
+    <div class="summary-card"><div class="num">${totalEmps}</div><div class="lbl">Employees</div></div>
+    <div class="summary-card"><div class="num">${(totalEmps/totalMgrs).toFixed(1)}</div><div class="lbl">Avg per manager</div></div>`;
+
+  const grid = document.getElementById('directory-grid');
+  const sorted = Object.values(state.managers).sort((a,b)=>a.name.localeCompare(b.name));
+
+  grid.innerHTML = sorted.map(mgr=>{
+    const emps = state.employees.filter(e=>e.managerId===mgr.username).sort((a,b)=>a.name.localeCompare(b.name));
+    const matchesMgr = mgr.name.toLowerCase().includes(search) || mgr.username.toLowerCase().includes(search);
+    const matchingEmps = search ? emps.filter(e=>e.name.toLowerCase().includes(search)||matchesMgr) : emps;
+    if(search && !matchesMgr && matchingEmps.length===0) return '';
+
+    const empRows = matchingEmps.map(e=>{
+      const sh=e.defaultShift||'B';
+      return`<li>
+        <div class="emp-name">${e.name}</div>
+        <span class="emp-shift" style="background:${shiftBg(sh)};color:${shiftFg(sh)}">${sh}</span>
+      </li>`;
+    }).join('');
+
+    return`<div class="dir-card">
+      <div class="dir-card-header">
+        <div>
+          <div class="mgr-name">${mgr.name}</div>
+          <div class="mgr-meta">@${mgr.username}</div>
+        </div>
+        <span class="emp-count">${emps.length} employee${emps.length!==1?'s':''}</span>
+      </div>
+      <ul class="dir-emp-list">${empRows||'<li style="color:#94a3b8;font-size:12px;padding:10px 16px">No employees assigned</li>'}</ul>
+    </div>`;
+  }).join('');
+}
+
+function filterDirectory(){ renderDirectory(); }
+
+function exportDirectory(){
+  const wb = XLSX.utils.book_new();
+
+  // Sheet 1: Manager → Employees (who reports to whom)
+  const rows1=[['Manager','Username','Employee','Employee Default Shift']];
+  Object.values(state.managers).sort((a,b)=>a.name.localeCompare(b.name)).forEach(mgr=>{
+    const emps=state.employees.filter(e=>e.managerId===mgr.username).sort((a,b)=>a.name.localeCompare(b.name));
+    if(emps.length===0){
+      rows1.push([mgr.name, mgr.username,'—','—']);
+    } else {
+      emps.forEach(emp=>{
+        rows1.push([mgr.name, mgr.username, emp.name, emp.defaultShift||'B']);
+      });
+    }
+  });
+  const ws1=XLSX.utils.aoa_to_sheet(rows1);
+  ws1['!cols']=[{wch:22},{wch:16},{wch:26},{wch:14}];
+  XLSX.utils.book_append_sheet(wb,ws1,'Reporting Structure');
+
+  // Sheet 2: Full manager list
+  const rows2=[['Manager Name','Username','No. of Employees']];
+  Object.values(state.managers).sort((a,b)=>a.name.localeCompare(b.name)).forEach(mgr=>{
+    const count=state.employees.filter(e=>e.managerId===mgr.username).length;
+    rows2.push([mgr.name, mgr.username, count]);
+  });
+  const ws2=XLSX.utils.aoa_to_sheet(rows2);
+  ws2['!cols']=[{wch:22},{wch:16},{wch:16}];
+  XLSX.utils.book_append_sheet(wb,ws2,'Manager List');
+
+  // Sheet 3: Full employee list
+  const rows3=[['Employee Name','Manager','Manager Username','Default Shift']];
+  state.employees.sort((a,b)=>a.name.localeCompare(b.name)).forEach(emp=>{
+    const mgr=state.managers[emp.managerId];
+    rows3.push([emp.name, mgr?.name||'Unassigned', emp.managerId, emp.defaultShift||'B']);
+  });
+  const ws3=XLSX.utils.aoa_to_sheet(rows3);
+  ws3['!cols']=[{wch:26},{wch:22},{wch:16},{wch:14}];
+  XLSX.utils.book_append_sheet(wb,ws3,'Employee List');
+
+  XLSX.writeFile(wb,'CAI_Directory_'+new Date().toISOString().slice(0,10)+'.xlsx');
+  showToast('Directory exported to Excel!','success');
+}
+
+// ─── LOADING + TOAST ──────────────────────────────────────────────────────────
+function showLoading(msg='Loading…'){const o=document.getElementById('loading');o.classList.add('show');document.getElementById('loading-msg').textContent=msg;}
+function hideLoading(){document.getElementById('loading').classList.remove('show');}
+let toastTimer;
+function showToast(msg,type='success'){
+  const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;
+  void t.offsetWidth;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),4500);
+}
+function showToastGlobal(msg,type){showToast(msg,type);}
+</script>
+</body>
+</html>
