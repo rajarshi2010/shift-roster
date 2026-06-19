@@ -19,7 +19,7 @@
   .form-group label{display:block;font-size:13px;font-weight:500;color:#374151;margin-bottom:6px}
   .form-group input{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;color:#1e293b;outline:none;transition:border-color .2s}
   .form-group input:focus{border-color:#2563eb}
-  .btn{width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;transition:background .2s}
+  .btn{width:100%;padding:12px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
   .btn:hover{background:#1d4ed8}
   .login-error{color:#dc2626;font-size:13px;margin-top:10px;text-align:center;display:none}
   #app{display:none;flex-direction:column;min-height:100vh}
@@ -33,7 +33,7 @@
   .role-badge{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600}
   .role-badge.manager{background:#dbeafe;color:#1d4ed8}
   .role-badge.admin{background:#fef3c7;color:#92400e}
-  .btn-sm{padding:6px 14px;border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s}
+  .btn-sm{padding:6px 14px;border:none;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer}
   .btn-outline{background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:#fff}
   .btn-outline:hover{background:rgba(255,255,255,0.1)}
   .tabs{background:#fff;border-bottom:1px solid #e2e8f0;padding:0 24px;display:flex}
@@ -44,22 +44,21 @@
   .panel{display:none}
   .panel.active{display:block}
   .card{background:#fff;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);overflow:hidden}
-  .card-header{padding:18px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  .card-header{padding:16px 20px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .card-header h2{font-size:16px;font-weight:600;color:#1a2744}
   .card-header p{font-size:13px;color:#64748b;margin-top:2px}
   .week-nav{display:flex;align-items:center;gap:10px}
-  .week-nav button{background:#f1f5f9;border:none;border-radius:6px;width:30px;height:30px;font-size:16px;cursor:pointer;color:#374151;display:flex;align-items:center;justify-content:center}
+  .week-nav button{background:#f1f5f9;border:none;border-radius:6px;width:30px;height:30px;font-size:16px;cursor:pointer;color:#374151}
   .week-nav button:hover{background:#e2e8f0}
   .week-label{font-size:14px;font-weight:600;color:#1a2744;min-width:160px;text-align:center}
-  /* BULK SELECT BAR */
-  .bulk-bar{display:flex;align-items:center;gap:10px;padding:12px 20px;background:#f0f7ff;border-bottom:1px solid #dbeafe;flex-wrap:wrap}
-  .bulk-bar label{font-size:13px;font-weight:600;color:#1d4ed8;white-space:nowrap}
-  .bulk-day-btns{display:flex;gap:6px;flex-wrap:wrap}
-  .bulk-day-btn{padding:4px 10px;border:1.5px solid #bfdbfe;border-radius:6px;background:#fff;font-size:12px;font-weight:500;color:#1d4ed8;cursor:pointer;transition:all .2s}
+  /* BULK BAR */
+  .bulk-bar{display:flex;align-items:center;gap:10px;padding:11px 20px;background:#f0f7ff;border-bottom:1px solid #dbeafe;flex-wrap:wrap}
+  .bulk-bar label{font-size:12px;font-weight:700;color:#1d4ed8;white-space:nowrap}
+  .bulk-day-btns{display:flex;gap:5px;flex-wrap:wrap}
+  .bulk-day-btn{padding:3px 9px;border:1.5px solid #bfdbfe;border-radius:6px;background:#fff;font-size:11px;font-weight:500;color:#1d4ed8;cursor:pointer}
   .bulk-day-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
-  .bulk-shift-btns{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
-  .bulk-shift-btn{padding:5px 13px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s}
-  .bulk-shift-btn:hover{opacity:0.85;transform:translateY(-1px)}
+  .bulk-shift-btns{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+  .bulk-shift-btn{padding:4px 11px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid transparent}
   .bulk-shift-btn.bA{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
   .bulk-shift-btn.bB{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
   .bulk-shift-btn.bC{background:#fefce8;color:#854d0e;border-color:#fef08a}
@@ -67,21 +66,18 @@
   .bulk-shift-btn.bE{background:#fff1f2;color:#be123c;border-color:#fecdd3}
   .bulk-shift-btn.bTO{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
   .bulk-shift-btn.bOFF{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
-  .bulk-divider{width:1px;height:24px;background:#bfdbfe;margin:0 4px}
-  .bulk-hint{font-size:11px;color:#64748b;margin-left:auto}
-  /* ROSTER TABLE */
+  .bulk-divider{width:1px;height:20px;background:#bfdbfe;margin:0 2px}
+  /* TABLE */
   .roster-wrap{overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th{padding:10px 12px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;background:#f8fafc;border-bottom:1px solid #e2e8f0}
-  th.day-th{text-align:center;min-width:90px}
-  td{padding:8px 10px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th{padding:9px 10px;text-align:left;font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;background:#f8fafc;border-bottom:1px solid #e2e8f0;white-space:nowrap}
+  th.center{text-align:center}
+  td{padding:7px 8px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
   tr:last-child td{border-bottom:none}
   tr:hover td{background:#fafbfc}
-  .emp-name{font-weight:500;color:#1e293b}
-  .emp-sub{font-size:11px;color:#94a3b8;margin-top:1px}
+  .emp-name{font-weight:500;color:#1e293b;font-size:13px}
   /* SHIFT SELECT */
-  .shift-select{padding:5px 6px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;outline:none;background:#fff;transition:all .15s;width:100%;max-width:88px}
-  .shift-select:focus{border-color:#2563eb}
+  .shift-select{padding:4px 5px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;outline:none;background:#fff;width:100%;min-width:72px;max-width:84px}
   .shift-select.A{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
   .shift-select.B{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
   .shift-select.C{background:#fefce8;color:#854d0e;border-color:#fef08a}
@@ -89,56 +85,78 @@
   .shift-select.E{background:#fff1f2;color:#be123c;border-color:#fecdd3}
   .shift-select.TO{background:#fff7ed;color:#9a3412;border-color:#fed7aa}
   .shift-select.OFF{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
-  /* SHIFT LEGEND */
-  .shift-legend{display:flex;flex-wrap:wrap;gap:8px;padding:14px 20px;border-top:1px solid #f1f5f9;background:#f8fafc}
-  .legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#64748b}
-  .legend-dot{width:10px;height:10px;border-radius:3px}
+  /* ON CALL CHECKBOX */
+  .oncall-wrap{display:flex;align-items:center;justify-content:center;gap:5px}
+  .oncall-cb{width:16px;height:16px;accent-color:#f59e0b;cursor:pointer}
+  .oncall-label{font-size:10px;color:#92400e;font-weight:500}
+  .oncall-wrap.checked .oncall-label{color:#d97706;font-weight:700}
+  /* COMMENT INPUT */
+  .comment-input{width:100%;min-width:130px;padding:5px 8px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:11px;color:#374151;outline:none;resize:none;font-family:inherit;background:#fff;line-height:1.4}
+  .comment-input:focus{border-color:#2563eb;background:#fff}
+  .comment-input::placeholder{color:#cbd5e1}
+  /* LEGEND */
+  .shift-legend{display:flex;flex-wrap:wrap;gap:8px;padding:12px 20px;border-top:1px solid #f1f5f9;background:#f8fafc}
+  .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#64748b}
+  .legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
   /* ACTION BAR */
-  .action-bar{padding:14px 20px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;background:#fff;flex-wrap:wrap;gap:10px}
+  .action-bar{padding:13px 20px;border-top:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
   .action-bar .hint{font-size:12px;color:#94a3b8}
-  .btn-submit{padding:10px 28px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+  .btn-submit{padding:9px 26px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
   .btn-submit:hover{background:#1d4ed8}
-  .toast{position:fixed;bottom:24px;right:24px;background:#1a2744;color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all .3s;z-index:999}
+  /* TOAST */
+  .toast{position:fixed;bottom:24px;right:24px;background:#1a2744;color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all .3s;z-index:999;max-width:320px}
   .toast.show{transform:translateY(0);opacity:1}
   .toast.success{border-left:4px solid #22c55e}
   .toast.error{border-left:4px solid #ef4444}
-  .status-pill{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:500;white-space:nowrap}
+  /* STATUS PILL */
+  .status-pill{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500;white-space:nowrap}
   .status-pill.submitted{background:#dcfce7;color:#166534}
   .status-pill.pending{background:#fef9c3;color:#854d0e}
-  /* ADMIN REPORT */
-  .report-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid #f1f5f9}
-  .report-controls select,.report-controls input{padding:7px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px;outline:none;color:#1e293b}
-  .report-controls select:focus{border-color:#2563eb}
-  .btn-export{padding:8px 18px;background:#1a2744;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+  /* REPORT */
+  .report-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:13px 20px;border-bottom:1px solid #f1f5f9}
+  .report-controls select{padding:7px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px;outline:none;color:#1e293b}
+  .btn-export{padding:8px 16px;background:#1a2744;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
   .btn-export:hover{background:#0f172a}
   /* MANAGE */
   .manage-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
   @media(max-width:700px){.manage-grid{grid-template-columns:1fr}}
-  .manage-list{list-style:none;max-height:300px;overflow-y:auto}
-  .manage-list li{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:13px}
+  .manage-list{list-style:none;max-height:280px;overflow-y:auto}
+  .manage-list li{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f1f5f9;font-size:13px}
   .manage-list li:last-child{border-bottom:none}
   .manage-list .name{font-weight:500;color:#1e293b}
-  .manage-list .meta{font-size:11px;color:#94a3b8}
-  .btn-icon{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:15px;padding:4px;border-radius:4px}
+  .manage-list .meta{font-size:11px;color:#94a3b8;margin-top:1px}
+  .manage-list .actions{display:flex;gap:4px;align-items:center;flex-shrink:0}
+  .btn-icon{background:none;border:none;cursor:pointer;color:#94a3b8;font-size:13px;padding:3px 6px;border-radius:4px}
   .btn-icon:hover{color:#dc2626}
-  .add-form{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-  .add-form input,.add-form select{flex:1;min-width:100px;padding:8px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px;outline:none}
-  .add-form input:focus,.add-form select:focus{border-color:#2563eb}
-  .btn-add{padding:8px 16px;background:#2563eb;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .btn-reassign{background:#eff6ff;border:none;cursor:pointer;color:#1d4ed8;font-size:11px;padding:3px 8px;border-radius:4px;font-weight:500}
+  .btn-reassign:hover{background:#dbeafe}
+  .add-form{display:flex;gap:7px;margin-top:12px;flex-wrap:wrap}
+  .add-form input,.add-form select{flex:1;min-width:90px;padding:7px 9px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px;outline:none}
+  .btn-add{padding:7px 14px;background:#2563eb;color:#fff;border:none;border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
   .pw-form{padding:20px;max-width:380px}
-  .pw-form .form-group{margin-bottom:14px}
+  .pw-form .form-group{margin-bottom:13px}
   .pw-form .form-group label{font-size:13px;font-weight:500;color:#374151;display:block;margin-bottom:5px}
   .pw-form .form-group input{width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:14px;outline:none}
-  .pw-form .form-group input:focus{border-color:#2563eb}
-  .section-title{font-size:14px;font-weight:600;color:#1a2744;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #f1f5f9}
-  .empty-state{text-align:center;padding:40px 20px;color:#94a3b8;font-size:14px}
-  .summary-row{display:flex;gap:12px;margin-bottom:20px;flex-wrap:wrap}
-  .summary-card{flex:1;min-width:110px;background:#fff;border-radius:10px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.07);text-align:center}
-  .summary-card .num{font-size:26px;font-weight:700;color:#1a2744}
-  .summary-card .lbl{font-size:12px;color:#64748b;margin-top:2px}
-  /* SELECT ALL ROW */
+  .section-title{font-size:14px;font-weight:600;color:#1a2744;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid #f1f5f9}
+  .empty-state{text-align:center;padding:36px 20px;color:#94a3b8;font-size:13px}
+  .summary-row{display:flex;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .summary-card{flex:1;min-width:100px;background:#fff;border-radius:10px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,0.07);text-align:center}
+  .summary-card .num{font-size:24px;font-weight:700;color:#1a2744}
+  .summary-card .lbl{font-size:11px;color:#64748b;margin-top:2px}
   .select-all-row td{background:#f0f7ff !important;border-bottom:2px solid #bfdbfe !important}
-  .select-all-label{font-size:12px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:0.04em}
+  .select-all-label{font-size:11px;font-weight:700;color:#1d4ed8;text-transform:uppercase;letter-spacing:0.04em}
+  /* REASSIGN MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:center;justify-content:center}
+  .modal-bg.open{display:flex}
+  .modal{background:#fff;border-radius:14px;padding:28px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+  .modal h3{font-size:16px;font-weight:700;color:#1a2744;margin-bottom:6px}
+  .modal p{font-size:13px;color:#64748b;margin-bottom:18px}
+  .modal select{width:100%;padding:9px 12px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:14px;outline:none;margin-bottom:18px}
+  .modal-btns{display:flex;gap:10px;justify-content:flex-end}
+  .btn-cancel{padding:9px 20px;background:#f1f5f9;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;color:#374151}
+  .btn-confirm{padding:9px 20px;background:#2563eb;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;color:#fff}
+  .info-box{background:#f0f7ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 14px;font-size:12px;color:#1d4ed8;margin-bottom:14px;line-height:1.6}
+  .info-box strong{display:block;margin-bottom:4px;font-size:13px}
 </style>
 </head>
 <body>
@@ -184,14 +202,14 @@
   <div class="tabs" id="main-tabs"></div>
   <div class="content">
 
-    <!-- MANAGER: ROSTER ENTRY -->
+    <!-- ROSTER -->
     <div class="panel" id="panel-roster">
       <div class="summary-row" id="roster-summary"></div>
       <div class="card">
         <div class="card-header">
           <div>
             <h2 id="roster-title">Weekly Shift Entry</h2>
-            <p id="roster-subtitle"></p>
+            <p id="roster-subtitle">Select shifts, on-call, and add comments for each employee</p>
           </div>
           <div class="week-nav">
             <button onclick="changeWeek(-1)">&#8249;</button>
@@ -199,8 +217,6 @@
             <button onclick="changeWeek(1)">&#8250;</button>
           </div>
         </div>
-
-        <!-- BULK ACTION BAR -->
         <div class="bulk-bar">
           <label>Apply to all:</label>
           <div class="bulk-day-btns" id="bulk-day-btns">
@@ -215,7 +231,7 @@
           </div>
           <div class="bulk-divider"></div>
           <div class="bulk-shift-btns">
-            <span style="font-size:12px;color:#64748b;font-weight:500">→ set shift:</span>
+            <span style="font-size:11px;color:#64748b;font-weight:500">→ shift:</span>
             <button class="bulk-shift-btn bA" onclick="applyBulk('A')">A</button>
             <button class="bulk-shift-btn bB" onclick="applyBulk('B')">B</button>
             <button class="bulk-shift-btn bC" onclick="applyBulk('C')">C</button>
@@ -224,22 +240,22 @@
             <button class="bulk-shift-btn bTO" onclick="applyBulk('TO')">Time Off</button>
             <button class="bulk-shift-btn bOFF" onclick="applyBulk('OFF')">Clear</button>
           </div>
-          <span class="bulk-hint" id="bulk-hint">Select days then a shift to apply to all employees</span>
         </div>
-
         <div class="roster-wrap">
           <table>
             <thead>
               <tr>
-                <th style="min-width:150px">Employee</th>
-                <th class="day-th">Mon</th>
-                <th class="day-th">Tue</th>
-                <th class="day-th">Wed</th>
-                <th class="day-th">Thu</th>
-                <th class="day-th">Fri</th>
-                <th class="day-th">Sat</th>
-                <th class="day-th">Sun</th>
-                <th>Status</th>
+                <th style="min-width:130px">Employee</th>
+                <th class="center" style="min-width:80px">Mon</th>
+                <th class="center" style="min-width:80px">Tue</th>
+                <th class="center" style="min-width:80px">Wed</th>
+                <th class="center" style="min-width:80px">Thu</th>
+                <th class="center" style="min-width:80px">Fri</th>
+                <th class="center" style="min-width:80px">Sat</th>
+                <th class="center" style="min-width:80px">Sun</th>
+                <th class="center" style="min-width:72px">On Call</th>
+                <th style="min-width:160px">Comments</th>
+                <th class="center">Status</th>
               </tr>
             </thead>
             <tbody id="roster-body"></tbody>
@@ -253,7 +269,7 @@
       </div>
     </div>
 
-    <!-- ADMIN: REPORT -->
+    <!-- REPORT -->
     <div class="panel" id="panel-report">
       <div class="summary-row" id="admin-summary"></div>
       <div class="card">
@@ -261,24 +277,19 @@
           <div><h2>Shift Report</h2><p>All submitted shifts across all teams</p></div>
         </div>
         <div class="report-controls">
-          <select id="filter-manager" onchange="renderReport()">
-            <option value="">All managers</option>
-          </select>
-          <select id="filter-week" onchange="renderReport()">
-            <option value="">All weeks</option>
-          </select>
+          <select id="filter-manager" onchange="renderReport()"><option value="">All managers</option></select>
+          <select id="filter-week" onchange="renderReport()"><option value="">All weeks</option></select>
           <select id="filter-shift" onchange="renderReport()">
             <option value="">All shifts</option>
-            <option value="A">Shift A</option>
-            <option value="B">Shift B</option>
-            <option value="C">Shift C</option>
-            <option value="D">Shift D</option>
-            <option value="E">Shift E</option>
-            <option value="TO">Time Off</option>
-            <option value="OFF">Off</option>
+            <option>A</option><option>B</option><option>C</option><option>D</option><option>E</option>
+            <option value="TO">Time Off</option><option value="OFF">Off</option>
+          </select>
+          <select id="filter-oncall" onchange="renderReport()">
+            <option value="">All</option>
+            <option value="yes">On Call only</option>
           </select>
           <button class="btn-export" onclick="exportExcel()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
             Export to Excel
           </button>
         </div>
@@ -287,9 +298,11 @@
             <thead>
               <tr>
                 <th>Manager</th><th>Employee</th><th>Week</th>
-                <th class="day-th">Mon</th><th class="day-th">Tue</th><th class="day-th">Wed</th>
-                <th class="day-th">Thu</th><th class="day-th">Fri</th><th class="day-th">Sat</th>
-                <th class="day-th">Sun</th><th>Submitted</th>
+                <th class="center">Mon</th><th class="center">Tue</th><th class="center">Wed</th>
+                <th class="center">Thu</th><th class="center">Fri</th><th class="center">Sat</th><th class="center">Sun</th>
+                <th class="center">On Call</th>
+                <th>Comments</th>
+                <th>Submitted</th>
               </tr>
             </thead>
             <tbody id="report-body"></tbody>
@@ -298,10 +311,15 @@
       </div>
     </div>
 
-    <!-- ADMIN: MANAGE -->
+    <!-- MANAGE -->
     <div class="panel" id="panel-manage">
+      <div class="info-box">
+        <strong>ℹ️ Reassigning an employee to a new manager</strong>
+        Find the employee in the list below → click <strong>Reassign</strong> → pick the new manager → confirm.
+        The employee immediately appears under the new manager on their next login. Past submitted shifts are preserved under the original manager's history.
+      </div>
       <div class="manage-grid">
-        <div class="card" style="padding:20px">
+        <div class="card" style="padding:18px">
           <div class="section-title">Managers</div>
           <ul class="manage-list" id="manager-list"></ul>
           <div class="add-form">
@@ -310,7 +328,7 @@
             <button class="btn-add" onclick="addManager()">+ Add</button>
           </div>
         </div>
-        <div class="card" style="padding:20px">
+        <div class="card" style="padding:18px">
           <div class="section-title">Employees</div>
           <ul class="manage-list" id="employee-list"></ul>
           <div class="add-form">
@@ -322,24 +340,15 @@
       </div>
     </div>
 
-    <!-- CHANGE PASSWORD -->
+    <!-- PASSWORD -->
     <div class="panel" id="panel-password">
       <div class="card" style="max-width:420px">
         <div class="card-header"><div><h2>Change Password</h2><p>Update your account password</p></div></div>
         <div class="pw-form">
-          <div class="form-group">
-            <label>Current password</label>
-            <input type="password" id="pw-current" placeholder="Enter current password"/>
-          </div>
-          <div class="form-group">
-            <label>New password</label>
-            <input type="password" id="pw-new" placeholder="At least 6 characters"/>
-          </div>
-          <div class="form-group">
-            <label>Confirm new password</label>
-            <input type="password" id="pw-confirm" placeholder="Repeat new password"/>
-          </div>
-          <button class="btn-submit" onclick="changePassword()" style="width:auto;padding:10px 24px">Update Password</button>
+          <div class="form-group"><label>Current password</label><input type="password" id="pw-current" placeholder="Current password"/></div>
+          <div class="form-group"><label>New password</label><input type="password" id="pw-new" placeholder="At least 6 characters"/></div>
+          <div class="form-group"><label>Confirm new password</label><input type="password" id="pw-confirm" placeholder="Repeat new password"/></div>
+          <button class="btn-submit" onclick="changePassword()" style="width:auto;padding:9px 24px">Update Password</button>
         </div>
       </div>
     </div>
@@ -347,384 +356,437 @@
   </div>
 </div>
 
+<!-- REASSIGN MODAL -->
+<div class="modal-bg" id="reassign-modal">
+  <div class="modal">
+    <h3>Reassign Employee</h3>
+    <p id="reassign-desc">Move this employee to a different manager.</p>
+    <select id="reassign-select"></select>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeReassign()">Cancel</button>
+      <button class="btn-confirm" onclick="confirmReassign()">Reassign</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
 const SHIFT_LABELS = {
-  A:   '9PM – 12PM',
-  B:   '8PM – 1AM',
-  C:   '8PM – 3AM',
-  D:   '10PM – 2AM',
-  E:   'Custom',
-  TO:  'Time Off',
-  OFF: 'Not assigned'
+  A:'9PM–12PM', B:'8PM–1AM', C:'8PM–3AM', D:'10PM–2AM', E:'Custom', TO:'Time Off', OFF:'Not assigned'
 };
 const SHIFT_OPTIONS = ['OFF','A','B','C','D','E','TO'];
 const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
 
-function shiftColor(s) {
+function shiftColor(s){
   return {A:'#bfdbfe',B:'#bbf7d0',C:'#fef08a',D:'#e9d5ff',E:'#fecdd3',TO:'#fed7aa',OFF:'#e2e8f0'}[s]||'#e2e8f0';
+}
+function shiftTextColor(s){
+  return {A:'#1d4ed8',B:'#166534',C:'#854d0e',D:'#7e22ce',E:'#be123c',TO:'#9a3412',OFF:'#94a3b8'}[s]||'#64748b';
 }
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let state = loadState();
 
-function defaultState() {
+function defaultState(){
   return {
-    users: {
-      admin:    { role:'admin',   name:'Admin',  pwHash: hashStr('welcome@123') },
-      rajarshi: { role:'manager', name:'Raj',    pwHash: hashStr('welcome@123') },
-      deepak:   { role:'manager', name:'Deepak', pwHash: hashStr('welcome@123') }
+    users:{
+      admin:    {role:'admin',   name:'Admin',  pwHash:hashStr('welcome@123')},
+      rajarshi: {role:'manager', name:'Raj',    pwHash:hashStr('welcome@123')},
+      deepak:   {role:'manager', name:'Deepak', pwHash:hashStr('welcome@123')}
     },
-    managers: {
-      rajarshi: { name:'Raj',    username:'rajarshi' },
-      deepak:   { name:'Deepak', username:'deepak'   }
+    managers:{
+      rajarshi:{name:'Raj',    username:'rajarshi'},
+      deepak:  {name:'Deepak', username:'deepak'}
     },
-    employees: [
-      { id:'e1', name:'Ashutosh',  managerId:'rajarshi' },
-      { id:'e2', name:'Ashok',     managerId:'rajarshi' },
-      { id:'e3', name:'Don',       managerId:'rajarshi' },
-      { id:'e4', name:'Aman',      managerId:'deepak'   },
-      { id:'e5', name:'Amarnath',  managerId:'deepak'   },
-      { id:'e6', name:'Dan',       managerId:'deepak'   }
+    employees:[
+      {id:'e1',name:'Ashutosh', managerId:'rajarshi'},
+      {id:'e2',name:'Ashok',    managerId:'rajarshi'},
+      {id:'e3',name:'Don',      managerId:'rajarshi'},
+      {id:'e4',name:'Aman',     managerId:'deepak'},
+      {id:'e5',name:'Amarnath', managerId:'deepak'},
+      {id:'e6',name:'Dan',      managerId:'deepak'}
     ],
-    submissions: {}
+    submissions:{},
+    reassignLog:[]
   };
 }
 
-function loadState() {
-  try { const s = localStorage.getItem('roster_state_v2'); if(s) return JSON.parse(s); } catch(e){}
+function loadState(){
+  try{const s=localStorage.getItem('roster_v3');if(s)return JSON.parse(s);}catch(e){}
   return defaultState();
 }
-function saveState() { localStorage.setItem('roster_state_v2', JSON.stringify(state)); }
+function saveState(){localStorage.setItem('roster_v3',JSON.stringify(state));}
 
-function hashStr(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) { h = ((h<<5)-h) + str.charCodeAt(i); h|=0; }
-  return 'h_' + Math.abs(h).toString(36) + '_' + str.length;
+function hashStr(str){
+  let h=0;
+  for(let i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h|=0;}
+  return 'h_'+Math.abs(h).toString(36)+'_'+str.length;
 }
 
 // ─── SESSION ──────────────────────────────────────────────────────────────────
-let session = null;
+let session=null;
 
-function doLogin() {
-  const user = document.getElementById('login-user').value.trim().toLowerCase();
-  const pass = document.getElementById('login-pass').value;
-  const err  = document.getElementById('login-error');
-  const u = state.users[user];
-  if (!u || u.pwHash !== hashStr(pass)) { err.style.display='block'; return; }
-  err.style.display = 'none';
-  session = { userId:user, role:u.role, name:u.name };
-  document.getElementById('login-screen').style.display = 'none';
-  const app = document.getElementById('app');
-  app.style.display = 'flex'; app.style.flexDirection = 'column';
-  document.getElementById('topbar-user').textContent = u.name;
-  const rb = document.getElementById('topbar-role');
-  rb.textContent = u.role==='admin'?'Admin':'Manager';
-  rb.className = 'role-badge ' + u.role;
+function doLogin(){
+  const user=document.getElementById('login-user').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-error');
+  const u=state.users[user];
+  if(!u||u.pwHash!==hashStr(pass)){err.style.display='block';return;}
+  err.style.display='none';
+  session={userId:user,role:u.role,name:u.name};
+  document.getElementById('login-screen').style.display='none';
+  const app=document.getElementById('app');
+  app.style.display='flex';app.style.flexDirection='column';
+  document.getElementById('topbar-user').textContent=u.name;
+  const rb=document.getElementById('topbar-role');
+  rb.textContent=u.role==='admin'?'Admin':'Manager';
+  rb.className='role-badge '+u.role;
   buildTabs();
-  showTab(session.role==='admin' ? 'report' : 'roster');
+  showTab(session.role==='admin'?'report':'roster');
 }
-document.getElementById('login-pass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-function doLogout() {
-  session=null; weekOffset=0;
+function doLogout(){
+  session=null;weekOffset=0;
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('app').style.display='none';
   document.getElementById('login-user').value='';
   document.getElementById('login-pass').value='';
 }
 
-// ─── TABS ─────────────────────────────────────────────────────────────────────
-function buildTabs() {
-  const tabs = session.role==='admin'
-    ? [['report','📊 Report'],['manage','👥 Manage Team'],['password','🔑 Change Password']]
-    : [['roster','📋 My Team Shifts'],['password','🔑 Change Password']];
-  document.getElementById('main-tabs').innerHTML = tabs.map(([id,label]) =>
-    `<div class="tab" id="tab-${id}" onclick="showTab('${id}')">${label}</div>`).join('');
+function buildTabs(){
+  const tabs=session.role==='admin'
+    ?[['report','📊 Report'],['manage','👥 Manage Team'],['password','🔑 Change Password']]
+    :[['roster','📋 My Team Shifts'],['password','🔑 Change Password']];
+  document.getElementById('main-tabs').innerHTML=tabs.map(([id,l])=>
+    `<div class="tab" id="tab-${id}" onclick="showTab('${id}')">${l}</div>`).join('');
 }
 
-function showTab(id) {
+function showTab(id){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  const t=document.getElementById('tab-'+id); if(t) t.classList.add('active');
-  const p=document.getElementById('panel-'+id); if(p) p.classList.add('active');
-  if(id==='roster')   renderRoster();
-  if(id==='report')   renderReport();
-  if(id==='manage')   renderManage();
+  const t=document.getElementById('tab-'+id);if(t)t.classList.add('active');
+  const p=document.getElementById('panel-'+id);if(p)p.classList.add('active');
+  if(id==='roster')renderRoster();
+  if(id==='report')renderReport();
+  if(id==='manage')renderManage();
 }
 
-// ─── WEEK UTILS ───────────────────────────────────────────────────────────────
-let weekOffset = 0;
+// ─── WEEK ─────────────────────────────────────────────────────────────────────
+let weekOffset=0;
 
-function getWeekStart(offset) {
-  const d = new Date();
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day===0 ? -6 : 1);
-  d.setDate(diff + offset*7); d.setHours(0,0,0,0); return d;
+function getWeekStart(offset){
+  const d=new Date();
+  const day=d.getDay();
+  d.setDate(d.getDate()-day+(day===0?-6:1)+offset*7);
+  d.setHours(0,0,0,0);return d;
 }
-function weekKey(d) { return d.toISOString().slice(0,10); }
-function weekLabel(d) {
-  const end = new Date(d); end.setDate(d.getDate()+6);
-  const fmt = dt => dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
-  return `W${getWeekNumber(d)}: ${fmt(d)} – ${fmt(end)}`;
+function weekKey(d){return d.toISOString().slice(0,10);}
+function weekLabel(d){
+  const end=new Date(d);end.setDate(d.getDate()+6);
+  const fmt=dt=>dt.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  return `W${getWeekNum(d)}: ${fmt(d)} – ${fmt(end)}`;
 }
-function getWeekNumber(d) {
-  const s = new Date(d.getFullYear(),0,1);
+function getWeekNum(d){
+  const s=new Date(d.getFullYear(),0,1);
   return Math.ceil((((d-s)/86400000)+s.getDay()+1)/7);
 }
-function changeWeek(dir) { weekOffset+=dir; renderRoster(); }
+function changeWeek(dir){weekOffset+=dir;renderRoster();}
 
-// ─── BULK SELECT ──────────────────────────────────────────────────────────────
-let bulkDays = 'all'; // 'all' or array of day indices
+// ─── BULK ─────────────────────────────────────────────────────────────────────
+let bulkDays='all';
 
-function toggleBulkDay(btn) {
-  const day = btn.dataset.day;
-  // Remove active from all
+function toggleBulkDay(btn){
   document.querySelectorAll('.bulk-day-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  bulkDays = day === 'all' ? 'all' : parseInt(day);
-  const hint = document.getElementById('bulk-hint');
-  hint.textContent = day==='all'
-    ? 'Will apply to all 7 days for every employee'
-    : 'Will apply to ' + DAYS[parseInt(day)] + ' only for every employee';
+  bulkDays=btn.dataset.day==='all'?'all':parseInt(btn.dataset.day);
 }
 
-function applyBulk(shift) {
-  const myEmps = state.employees.filter(e=>e.managerId===session.userId);
-  myEmps.forEach(emp => {
-    const days = bulkDays==='all' ? [0,1,2,3,4,5,6] : [bulkDays];
-    days.forEach(di => {
-      const sel = document.getElementById('sh_'+emp.id+'_'+di);
-      if (sel) { sel.value=shift; sel.className='shift-select '+shift; }
+function applyBulk(shift){
+  const myEmps=state.employees.filter(e=>e.managerId===session.userId);
+  myEmps.forEach(emp=>{
+    const days=bulkDays==='all'?[0,1,2,3,4,5,6]:[bulkDays];
+    days.forEach(di=>{
+      const sel=document.getElementById('sh_'+emp.id+'_'+di);
+      if(sel){sel.value=shift;sel.className='shift-select '+shift;}
     });
   });
-  const dayLabel = bulkDays==='all' ? 'all days' : DAYS[bulkDays];
-  showToast(`Applied "${shift==='TO'?'Time Off':shift==='OFF'?'Clear':shift}" to ${dayLabel} for all employees`, 'success');
+  const dl=bulkDays==='all'?'all days':DAYS[bulkDays];
+  showToast(`Applied "${shift==='TO'?'Time Off':shift==='OFF'?'Clear':shift}" to ${dl} for all employees`,'success');
 }
 
-// ─── ROSTER RENDER ────────────────────────────────────────────────────────────
-function renderRoster() {
-  const ws   = getWeekStart(weekOffset);
-  const wk   = weekKey(ws);
-  document.getElementById('week-label').textContent = weekLabel(ws);
+// ─── ROSTER ───────────────────────────────────────────────────────────────────
+function renderRoster(){
+  const ws=getWeekStart(weekOffset);
+  const wk=weekKey(ws);
+  document.getElementById('week-label').textContent=weekLabel(ws);
 
-  const myEmps = state.employees.filter(e=>e.managerId===session.userId);
-  const subKey = session.userId+'::'+wk;
-  const saved  = state.submissions[subKey];
+  const myEmps=state.employees.filter(e=>e.managerId===session.userId);
+  const subKey=session.userId+'::'+wk;
+  const saved=state.submissions[subKey];
 
-  // Summary
-  const weeksCount = Object.keys(state.submissions).filter(k=>k.startsWith(session.userId)).length;
-  document.getElementById('roster-summary').innerHTML = `
+  const weeksCount=Object.keys(state.submissions).filter(k=>k.startsWith(session.userId)).length;
+  document.getElementById('roster-summary').innerHTML=`
     <div class="summary-card"><div class="num">${myEmps.length}</div><div class="lbl">Employees</div></div>
     <div class="summary-card"><div class="num">${weeksCount}</div><div class="lbl">Weeks submitted</div></div>
-    <div class="summary-card"><div class="num">${saved?'✓':'–'}</div><div class="lbl">This week</div></div>
-  `;
+    <div class="summary-card"><div class="num">${saved?'✓':'–'}</div><div class="lbl">This week</div></div>`;
 
-  document.getElementById('roster-title').textContent = (state.managers[session.userId]?.name||'My') + "'s Team — Shift Entry";
-  document.getElementById('last-submitted').textContent = saved
-    ? 'Last submitted: ' + new Date(saved.submittedAt).toLocaleString()
-    : 'Not yet submitted for this week';
+  document.getElementById('roster-title').textContent=(state.managers[session.userId]?.name||'My')+"'s Team — Shift Entry";
+  document.getElementById('last-submitted').textContent=saved
+    ?'Last submitted: '+new Date(saved.submittedAt).toLocaleString()
+    :'Not yet submitted for this week';
 
-  if (myEmps.length===0) {
-    document.getElementById('roster-body').innerHTML =
-      '<tr><td colspan="9" class="empty-state">No employees assigned to your team yet.</td></tr>';
+  if(!myEmps.length){
+    document.getElementById('roster-body').innerHTML='<tr><td colspan="11" class="empty-state">No employees assigned to your team yet.</td></tr>';
     return;
   }
 
-  // Build rows: "Select All" row first, then each employee
-  const selectAllRow = `
-    <tr class="select-all-row">
-      <td><div class="select-all-label">⬇ Select all employees</div><div style="font-size:11px;color:#64748b;margin-top:2px">Use bulk bar above or dropdowns below</div></td>
-      ${DAYS.map((_,di)=>`
-        <td style="text-align:center">
-          <select class="shift-select OFF" id="sa_${di}" onchange="applySelectAllDay(${di},this.value)">
-            <option value="">— pick —</option>
-            ${SHIFT_OPTIONS.map(o=>`<option value="${o}">${o==='TO'?'Time Off':o==='OFF'?'Off':o}</option>`).join('')}
-          </select>
-        </td>`).join('')}
-      <td></td>
-    </tr>`;
+  // Select-all row
+  const saRow=`<tr class="select-all-row">
+    <td><div class="select-all-label">⬇ Apply to all</div></td>
+    ${DAYS.map((_,di)=>`<td style="text-align:center">
+      <select class="shift-select OFF" id="sa_${di}" onchange="applySelectAllDay(${di},this.value)">
+        <option value="">—</option>
+        ${SHIFT_OPTIONS.map(o=>`<option value="${o}">${o==='TO'?'Time Off':o==='OFF'?'Off':o}</option>`).join('')}
+      </select></td>`).join('')}
+    <td style="text-align:center">
+      <label style="display:flex;align-items:center;justify-content:center;gap:4px;cursor:pointer;font-size:10px;color:#92400e;font-weight:600">
+        <input type="checkbox" class="oncall-cb" id="sa_oncall" onchange="applyOnCallAll(this.checked)" style="width:15px;height:15px;accent-color:#f59e0b"/>All
+      </label>
+    </td>
+    <td></td><td></td>
+  </tr>`;
 
-  const empRows = myEmps.map(emp => {
-    const empShifts = saved ? (saved.shifts[emp.id]||Array(7).fill('OFF')) : Array(7).fill('OFF');
-    const dayCells = empShifts.map((sh,di)=>`
+  const empRows=myEmps.map(emp=>{
+    const empShifts=saved?(saved.shifts[emp.id]||Array(7).fill('OFF')):Array(7).fill('OFF');
+    const empOnCall=saved?(saved.onCall?.[emp.id]||false):false;
+    const empComment=saved?(saved.comments?.[emp.id]||''):'';
+
+    const dayCells=empShifts.map((sh,di)=>`
       <td style="text-align:center">
         <select class="shift-select ${sh}" id="sh_${emp.id}_${di}" onchange="onShiftChange(this)">
           ${SHIFT_OPTIONS.map(o=>`<option value="${o}"${o===sh?' selected':''}>${o==='TO'?'Time Off':o==='OFF'?'Off':o}</option>`).join('')}
-        </select>
-      </td>`).join('');
-    const pill = saved
-      ? '<span class="status-pill submitted">Submitted</span>'
-      : '<span class="status-pill pending">Pending</span>';
+        </select></td>`).join('');
+
+    const pill=saved
+      ?'<span class="status-pill submitted">Submitted</span>'
+      :'<span class="status-pill pending">Pending</span>';
+
     return `<tr>
       <td><div class="emp-name">${emp.name}</div></td>
       ${dayCells}
-      <td>${pill}</td>
+      <td style="text-align:center">
+        <div class="oncall-wrap${empOnCall?' checked':''}">
+          <input type="checkbox" class="oncall-cb" id="oc_${emp.id}" ${empOnCall?'checked':''} onchange="onCallChange(this,'${emp.id}')"/>
+          <span class="oncall-label">${empOnCall?'On Call':''}</span>
+        </div>
+      </td>
+      <td>
+        <textarea class="comment-input" id="cm_${emp.id}" rows="2" placeholder="Add a comment…">${empComment}</textarea>
+      </td>
+      <td style="text-align:center">${pill}</td>
     </tr>`;
   }).join('');
 
-  document.getElementById('roster-body').innerHTML = selectAllRow + empRows;
+  document.getElementById('roster-body').innerHTML=saRow+empRows;
 
   // Legend
-  document.getElementById('shift-legend').innerHTML =
+  document.getElementById('shift-legend').innerHTML=
     Object.entries(SHIFT_LABELS).map(([k,v])=>`
       <div class="legend-item">
         <div class="legend-dot" style="background:${shiftColor(k)}"></div>
         <strong>${k==='OFF'?'Off':k==='TO'?'TO':k}</strong> — ${v}
-      </div>`).join('');
+      </div>`).join('')
+    +`<div class="legend-item"><div class="legend-dot" style="background:#fef3c7;border:1px solid #fcd34d"></div><strong>🔔</strong> — On Call</div>`;
 }
 
-function onShiftChange(sel) { sel.className='shift-select '+sel.value; }
+function onShiftChange(sel){sel.className='shift-select '+sel.value;}
 
-// Apply a shift to all employees for a specific day via the Select All row
-function applySelectAllDay(dayIdx, shift) {
-  if (!shift) return;
-  const myEmps = state.employees.filter(e=>e.managerId===session.userId);
-  myEmps.forEach(emp => {
-    const sel = document.getElementById('sh_'+emp.id+'_'+dayIdx);
-    if (sel) { sel.value=shift; sel.className='shift-select '+shift; }
+function onCallChange(cb, empId){
+  const wrap=cb.closest('.oncall-wrap');
+  const lbl=wrap.querySelector('.oncall-label');
+  if(cb.checked){wrap.classList.add('checked');lbl.textContent='On Call';}
+  else{wrap.classList.remove('checked');lbl.textContent='';}
+}
+
+function applySelectAllDay(dayIdx,shift){
+  if(!shift)return;
+  state.employees.filter(e=>e.managerId===session.userId).forEach(emp=>{
+    const sel=document.getElementById('sh_'+emp.id+'_'+dayIdx);
+    if(sel){sel.value=shift;sel.className='shift-select '+shift;}
   });
-  // Reset the select-all dropdown visually
-  const saEl = document.getElementById('sa_'+dayIdx);
-  if (saEl) { saEl.value=''; saEl.className='shift-select OFF'; }
-  showToast(`Applied "${shift==='TO'?'Time Off':shift==='OFF'?'Off':shift}" to ${DAYS[dayIdx]} for all employees`, 'success');
+  const sa=document.getElementById('sa_'+dayIdx);
+  if(sa){sa.value='';sa.className='shift-select OFF';}
+  showToast(`Applied "${shift==='TO'?'Time Off':shift==='OFF'?'Off':shift}" to ${DAYS[dayIdx]} for all`,'success');
 }
 
-function submitRoster() {
-  const ws     = getWeekStart(weekOffset);
-  const wk     = weekKey(ws);
-  const myEmps = state.employees.filter(e=>e.managerId===session.userId);
-  const shifts = {};
-  myEmps.forEach(emp => {
-    shifts[emp.id] = DAYS.map((_,di) => {
-      const el = document.getElementById('sh_'+emp.id+'_'+di);
-      return el ? el.value : 'OFF';
+function applyOnCallAll(checked){
+  state.employees.filter(e=>e.managerId===session.userId).forEach(emp=>{
+    const cb=document.getElementById('oc_'+emp.id);
+    if(cb){
+      cb.checked=checked;
+      const wrap=cb.closest('.oncall-wrap');
+      const lbl=wrap.querySelector('.oncall-label');
+      if(checked){wrap.classList.add('checked');lbl.textContent='On Call';}
+      else{wrap.classList.remove('checked');lbl.textContent='';}
+    }
+  });
+  showToast(checked?'On Call set for all employees':'On Call cleared for all','success');
+}
+
+function submitRoster(){
+  const ws=getWeekStart(weekOffset);
+  const wk=weekKey(ws);
+  const myEmps=state.employees.filter(e=>e.managerId===session.userId);
+  const shifts={}, onCall={}, comments={};
+  myEmps.forEach(emp=>{
+    shifts[emp.id]=DAYS.map((_,di)=>{
+      const el=document.getElementById('sh_'+emp.id+'_'+di);
+      return el?el.value:'OFF';
     });
+    const cb=document.getElementById('oc_'+emp.id);
+    onCall[emp.id]=cb?cb.checked:false;
+    const cm=document.getElementById('cm_'+emp.id);
+    comments[emp.id]=cm?cm.value.trim():'';
   });
-  state.submissions[session.userId+'::'+wk] = {
-    managerId:   session.userId,
-    managerName: state.managers[session.userId]?.name || session.userId,
-    weekKey:     wk,
-    weekLabel:   weekLabel(ws),
-    shifts,
-    submittedAt: new Date().toISOString()
+  state.submissions[session.userId+'::'+wk]={
+    managerId:session.userId,
+    managerName:state.managers[session.userId]?.name||session.userId,
+    weekKey:wk,
+    weekLabel:weekLabel(ws),
+    shifts, onCall, comments,
+    submittedAt:new Date().toISOString()
   };
   saveState();
-  showToast('Shifts submitted for ' + weekLabel(ws), 'success');
+  showToast('Shifts submitted for '+weekLabel(ws),'success');
   renderRoster();
 }
 
-// ─── ADMIN REPORT ─────────────────────────────────────────────────────────────
-function renderReport() {
-  const fmgr  = document.getElementById('filter-manager');
-  const fwk   = document.getElementById('filter-week');
-  const fsh   = document.getElementById('filter-shift');
-  const mgrs  = Object.values(state.managers);
-  fmgr.innerHTML = '<option value="">All managers</option>' +
-    mgrs.map(m=>`<option value="${m.username}">${m.name}</option>`).join('');
-  const weeks = [...new Set(Object.values(state.submissions).map(s=>s.weekKey))].sort().reverse();
-  fwk.innerHTML = '<option value="">All weeks</option>' +
-    weeks.map(w=>`<option value="${w}">${w}</option>`).join('');
+// ─── REPORT ───────────────────────────────────────────────────────────────────
+function renderReport(){
+  const fmgr=document.getElementById('filter-manager');
+  const fwk=document.getElementById('filter-week');
+  const fsh=document.getElementById('filter-shift');
+  const foc=document.getElementById('filter-oncall');
 
-  const selMgr = fmgr.value, selWk = fwk.value, selSh = fsh.value;
+  fmgr.innerHTML='<option value="">All managers</option>'+
+    Object.values(state.managers).map(m=>`<option value="${m.username}">${m.name}</option>`).join('');
+  const weeks=[...new Set(Object.values(state.submissions).map(s=>s.weekKey))].sort().reverse();
+  fwk.innerHTML='<option value="">All weeks</option>'+weeks.map(w=>`<option value="${w}">${w}</option>`).join('');
 
-  const totalEmps = state.employees.length;
-  const totalMgrs = Object.keys(state.managers).length;
-  const totalSubs = Object.keys(state.submissions).length;
-  document.getElementById('admin-summary').innerHTML = `
+  const selMgr=fmgr.value,selWk=fwk.value,selSh=fsh.value,selOc=foc.value;
+
+  const totalEmps=state.employees.length;
+  const totalMgrs=Object.keys(state.managers).length;
+  const totalSubs=Object.keys(state.submissions).length;
+  document.getElementById('admin-summary').innerHTML=`
     <div class="summary-card"><div class="num">${totalMgrs}</div><div class="lbl">Managers</div></div>
     <div class="summary-card"><div class="num">${totalEmps}</div><div class="lbl">Employees</div></div>
-    <div class="summary-card"><div class="num">${totalSubs}</div><div class="lbl">Submissions</div></div>
-  `;
+    <div class="summary-card"><div class="num">${totalSubs}</div><div class="lbl">Submissions</div></div>`;
 
-  let subs = Object.values(state.submissions).filter(s=>
-    (!selMgr||s.managerId===selMgr) && (!selWk||s.weekKey===selWk)
+  const subs=Object.values(state.submissions).filter(s=>
+    (!selMgr||s.managerId===selMgr)&&(!selWk||s.weekKey===selWk)
   ).sort((a,b)=>b.weekKey.localeCompare(a.weekKey));
 
-  const rows = [];
-  subs.forEach(sub => {
-    state.employees.filter(e=>e.managerId===sub.managerId).forEach(emp => {
-      const empShifts = sub.shifts[emp.id]||Array(7).fill('OFF');
-      if (selSh && !empShifts.includes(selSh)) return;
-      rows.push({sub, emp, empShifts});
+  const rows=[];
+  subs.forEach(sub=>{
+    state.employees.filter(e=>e.managerId===sub.managerId).forEach(emp=>{
+      const empShifts=sub.shifts[emp.id]||Array(7).fill('OFF');
+      const empOnCall=sub.onCall?.[emp.id]||false;
+      const empComment=sub.comments?.[emp.id]||'';
+      if(selSh&&!empShifts.includes(selSh))return;
+      if(selOc==='yes'&&!empOnCall)return;
+      rows.push({sub,emp,empShifts,empOnCall,empComment});
     });
   });
 
-  const tbody = document.getElementById('report-body');
-  if (rows.length===0) {
-    tbody.innerHTML='<tr><td colspan="12" class="empty-state">No submissions yet.</td></tr>'; return;
-  }
+  const tbody=document.getElementById('report-body');
+  if(!rows.length){tbody.innerHTML='<tr><td colspan="13" class="empty-state">No submissions yet.</td></tr>';return;}
 
-  const shiftCell = s => {
-    const color = shiftColor(s);
-    const label = s==='TO'?'TO':s==='OFF'?'–':s;
-    const textColor = {A:'#1d4ed8',B:'#166534',C:'#854d0e',D:'#7e22ce',E:'#be123c',TO:'#9a3412',OFF:'#94a3b8'}[s]||'#64748b';
-    return `<td style="text-align:center"><span style="font-size:12px;font-weight:600;color:${textColor};background:${color};padding:2px 6px;border-radius:4px">${label}</span></td>`;
+  const sc=s=>{
+    const lbl=s==='TO'?'TO':s==='OFF'?'–':s;
+    return `<td style="text-align:center"><span style="font-size:11px;font-weight:600;color:${shiftTextColor(s)};background:${shiftColor(s)};padding:2px 5px;border-radius:4px">${lbl}</span></td>`;
   };
 
-  tbody.innerHTML = rows.map(({sub,emp,empShifts})=>`
+  tbody.innerHTML=rows.map(({sub,emp,empShifts,empOnCall,empComment})=>`
     <tr>
       <td><div class="emp-name">${sub.managerName}</div></td>
       <td>${emp.name}</td>
-      <td style="font-size:12px;white-space:nowrap">${sub.weekLabel||sub.weekKey}</td>
-      ${empShifts.map(shiftCell).join('')}
-      <td style="font-size:11px;color:#94a3b8;white-space:nowrap">${new Date(sub.submittedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</td>
+      <td style="font-size:11px;white-space:nowrap">${sub.weekLabel||sub.weekKey}</td>
+      ${empShifts.map(sc).join('')}
+      <td style="text-align:center">${empOnCall?'<span style="font-size:11px;background:#fef3c7;color:#92400e;padding:2px 7px;border-radius:10px;font-weight:600">🔔 Yes</span>':'<span style="color:#cbd5e1;font-size:11px">—</span>'}</td>
+      <td style="font-size:11px;color:#374151;max-width:180px">${empComment||'<span style="color:#cbd5e1">—</span>'}</td>
+      <td style="font-size:10px;color:#94a3b8;white-space:nowrap">${new Date(sub.submittedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})}</td>
     </tr>`).join('');
 }
 
-function exportExcel() {
-  const subs = Object.values(state.submissions).sort((a,b)=>b.weekKey.localeCompare(a.weekKey));
-  if (!subs.length) { showToast('No data to export yet.','error'); return; }
+function exportExcel(){
+  const subs=Object.values(state.submissions).sort((a,b)=>b.weekKey.localeCompare(a.weekKey));
+  if(!subs.length){showToast('No data to export yet.','error');return;}
 
-  const rows = [['Manager','Employee','Week','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','Submitted At']];
-  subs.forEach(sub => {
-    state.employees.filter(e=>e.managerId===sub.managerId).forEach(emp => {
-      const empShifts = sub.shifts[emp.id]||Array(7).fill('OFF');
-      rows.push([sub.managerName, emp.name, sub.weekLabel||sub.weekKey,
+  const rows=[['Manager','Employee','Week','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday','On Call','Comments','Submitted At']];
+  subs.forEach(sub=>{
+    state.employees.filter(e=>e.managerId===sub.managerId).forEach(emp=>{
+      const empShifts=sub.shifts[emp.id]||Array(7).fill('OFF');
+      const empOnCall=sub.onCall?.[emp.id]?'Yes':'No';
+      const empComment=sub.comments?.[emp.id]||'';
+      rows.push([
+        sub.managerName,emp.name,sub.weekLabel||sub.weekKey,
         ...empShifts.map(s=>s==='TO'?'Time Off':s==='OFF'?'Off':s),
-        new Date(sub.submittedAt).toLocaleString()]);
+        empOnCall,empComment,
+        new Date(sub.submittedAt).toLocaleString()
+      ]);
     });
   });
 
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws['!cols']=[{wch:16},{wch:16},{wch:22},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10},{wch:10},{wch:22}];
-  XLSX.utils.book_append_sheet(wb, ws, 'Shift Report');
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols']=[{wch:14},{wch:14},{wch:22},{wch:9},{wch:9},{wch:9},{wch:9},{wch:9},{wch:9},{wch:9},{wch:8},{wch:30},{wch:20}];
+  XLSX.utils.book_append_sheet(wb,ws,'Shift Report');
 
+  // Reassign log sheet
+  if(state.reassignLog&&state.reassignLog.length){
+    const logRows=[['Employee','From Manager','To Manager','Reassigned At','Reassigned By']];
+    state.reassignLog.forEach(r=>logRows.push([r.empName,r.fromName,r.toName,r.at,r.by]));
+    XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(logRows),'Reassign Log');
+  }
+
+  // Legend
   const legend=[['Code','Label','Hours'],
-    ['A','Shift A','9PM – 12PM'],['B','Shift B','8PM – 1AM'],
-    ['C','Shift C','8PM – 3AM'],['D','Shift D','10PM – 2AM'],
-    ['E','Shift E','Custom'],['TO','Time Off','Approved leave'],
-    ['Off','Not assigned','—']];
-  XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(legend), 'Shift Legend');
+    ['A','Shift A','9PM–12PM'],['B','Shift B','8PM–1AM'],
+    ['C','Shift C','8PM–3AM'],['D','Shift D','10PM–2AM'],
+    ['E','Shift E','Custom'],['TO','Time Off','Approved leave'],['Off','Not assigned','—']];
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(legend),'Shift Legend');
 
-  XLSX.writeFile(wb, 'ShiftRoster_'+new Date().toISOString().slice(0,10)+'.xlsx');
+  XLSX.writeFile(wb,'ShiftRoster_'+new Date().toISOString().slice(0,10)+'.xlsx');
   showToast('Excel report downloaded!','success');
 }
 
 // ─── MANAGE ───────────────────────────────────────────────────────────────────
-function renderManage() {
-  document.getElementById('manager-list').innerHTML =
+function renderManage(){
+  document.getElementById('manager-list').innerHTML=
     Object.values(state.managers).map(m=>`
       <li>
         <div><div class="name">${m.name}</div><div class="meta">@${m.username} · ${state.employees.filter(e=>e.managerId===m.username).length} employees</div></div>
         <button class="btn-icon" onclick="removeManager('${m.username}')">✕</button>
       </li>`).join('')||'<li style="color:#94a3b8;font-size:13px">No managers yet.</li>';
 
-  document.getElementById('employee-list').innerHTML =
+  document.getElementById('employee-list').innerHTML=
     state.employees.map(e=>`
       <li>
-        <div><div class="name">${e.name}</div><div class="meta">Under: ${state.managers[e.managerId]?.name||e.managerId}</div></div>
-        <button class="btn-icon" onclick="removeEmployee('${e.id}')">✕</button>
+        <div><div class="name">${e.name}</div><div class="meta">Manager: ${state.managers[e.managerId]?.name||'Unassigned'}</div></div>
+        <div class="actions">
+          <button class="btn-reassign" onclick="openReassign('${e.id}')">Reassign</button>
+          <button class="btn-icon" onclick="removeEmployee('${e.id}')">✕</button>
+        </div>
       </li>`).join('')||'<li style="color:#94a3b8;font-size:13px">No employees yet.</li>';
 
-  document.getElementById('new-emp-mgr').innerHTML =
+  document.getElementById('new-emp-mgr').innerHTML=
     Object.values(state.managers).map(m=>`<option value="${m.username}">${m.name}</option>`).join('');
 }
 
-function addManager() {
+function addManager(){
   const name=document.getElementById('new-mgr-name').value.trim();
   const user=document.getElementById('new-mgr-user').value.trim().toLowerCase();
   if(!name||!user){showToast('Enter both name and username.','error');return;}
@@ -733,43 +795,85 @@ function addManager() {
   state.users[user]={role:'manager',name,pwHash:hashStr('welcome@123')};
   document.getElementById('new-mgr-name').value='';
   document.getElementById('new-mgr-user').value='';
-  saveState(); renderManage();
-  showToast(`Manager "${name}" added. Default password: welcome@123`,'success');
+  saveState();renderManage();
+  showToast(`"${name}" added. Default password: welcome@123`,'success');
 }
 
-function removeManager(uid) {
-  if(!confirm(`Remove manager "${state.managers[uid]?.name}"?`)) return;
-  delete state.managers[uid]; delete state.users[uid];
+function removeManager(uid){
+  if(!confirm(`Remove manager "${state.managers[uid]?.name}"?`))return;
+  delete state.managers[uid];delete state.users[uid];
   state.employees.forEach(e=>{if(e.managerId===uid)e.managerId='';});
-  saveState(); renderManage(); showToast('Manager removed.','success');
+  saveState();renderManage();showToast('Manager removed.','success');
 }
 
-function addEmployee() {
+function addEmployee(){
   const name=document.getElementById('new-emp-name').value.trim();
   const mgr=document.getElementById('new-emp-mgr').value;
   if(!name){showToast('Enter employee name.','error');return;}
   state.employees.push({id:'e'+Date.now(),name,managerId:mgr});
   document.getElementById('new-emp-name').value='';
-  saveState(); renderManage(); showToast(`"${name}" added.`,'success');
+  saveState();renderManage();showToast(`"${name}" added.`,'success');
 }
 
-function removeEmployee(id) {
+function removeEmployee(id){
   const emp=state.employees.find(e=>e.id===id);
-  if(!confirm(`Remove "${emp?.name}"?`)) return;
+  if(!confirm(`Remove "${emp?.name}"?`))return;
   state.employees=state.employees.filter(e=>e.id!==id);
-  saveState(); renderManage(); showToast('Employee removed.','success');
+  saveState();renderManage();showToast('Employee removed.','success');
 }
 
-// ─── CHANGE PASSWORD ──────────────────────────────────────────────────────────
-function changePassword() {
+// ─── REASSIGN ─────────────────────────────────────────────────────────────────
+let reassignEmpId=null;
+
+function openReassign(empId){
+  const emp=state.employees.find(e=>e.id===empId);
+  if(!emp)return;
+  reassignEmpId=empId;
+  document.getElementById('reassign-desc').textContent=
+    `Move "${emp.name}" (currently under ${state.managers[emp.managerId]?.name||'Unassigned'}) to:`;
+  document.getElementById('reassign-select').innerHTML=
+    Object.values(state.managers)
+      .filter(m=>m.username!==emp.managerId)
+      .map(m=>`<option value="${m.username}">${m.name}</option>`).join('');
+  document.getElementById('reassign-modal').classList.add('open');
+}
+
+function closeReassign(){
+  document.getElementById('reassign-modal').classList.remove('open');
+  reassignEmpId=null;
+}
+
+function confirmReassign(){
+  if(!reassignEmpId)return;
+  const emp=state.employees.find(e=>e.id===reassignEmpId);
+  const newMgrId=document.getElementById('reassign-select').value;
+  if(!emp||!newMgrId){closeReassign();return;}
+  const fromName=state.managers[emp.managerId]?.name||'Unassigned';
+  const toName=state.managers[newMgrId]?.name||newMgrId;
+  // Log it
+  if(!state.reassignLog)state.reassignLog=[];
+  state.reassignLog.push({
+    empId:emp.id, empName:emp.name,
+    fromId:emp.managerId, fromName,
+    toId:newMgrId, toName,
+    at:new Date().toISOString(),
+    by:'admin'
+  });
+  emp.managerId=newMgrId;
+  saveState();closeReassign();renderManage();
+  showToast(`"${emp.name}" reassigned from ${fromName} to ${toName}`,'success');
+}
+
+// ─── PASSWORD ─────────────────────────────────────────────────────────────────
+function changePassword(){
   const cur=document.getElementById('pw-current').value;
   const nw=document.getElementById('pw-new').value;
   const cf=document.getElementById('pw-confirm').value;
   const u=state.users[session.userId];
   if(hashStr(cur)!==u.pwHash){showToast('Current password is incorrect.','error');return;}
-  if(nw.length<6){showToast('New password must be at least 6 characters.','error');return;}
+  if(nw.length<6){showToast('Must be at least 6 characters.','error');return;}
   if(nw!==cf){showToast('Passwords do not match.','error');return;}
-  u.pwHash=hashStr(nw); saveState();
+  u.pwHash=hashStr(nw);saveState();
   document.getElementById('pw-current').value='';
   document.getElementById('pw-new').value='';
   document.getElementById('pw-confirm').value='';
@@ -778,10 +882,10 @@ function changePassword() {
 
 // ─── TOAST ────────────────────────────────────────────────────────────────────
 let toastTimer;
-function showToast(msg,type='success') {
+function showToast(msg,type='success'){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.className='toast '+type;
-  void t.offsetWidth; t.classList.add('show');
+  t.textContent=msg;t.className='toast '+type;
+  void t.offsetWidth;t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
 }
